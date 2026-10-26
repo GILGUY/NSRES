@@ -169,6 +169,12 @@ SOURCES: dict[type[StrEnum], list[tuple[str, Source]]] = {
         )
     ],
     vocab.ModelVersionState: [("§5.4 model version lifecycle", _model_version_states)],
+    vocab.PrecedenceTier: [
+        (
+            "§3.4 item 5 precedence tiers",
+            lambda: re.findall(r"^\s+\d\. ([A-Z]+) —", spec.section("### 3.4"), re.M),
+        )
+    ],
     vocab.PovMode: [("§7.4 POV modes", _pov_modes)],
     vocab.DeliveryMode: [("§7.7 RV-1", lambda: spec.listed(r"planned mode \(([^)]+)\)"))],
     vocab.VisibilityClass: [
@@ -293,6 +299,13 @@ def test_schema_enum_equals_vocabulary(
     vocabulary: type[StrEnum], schema: dict[str, Any], path: tuple[str, ...]
 ) -> None:
     assert _at(schema, *path) == values(vocabulary)
+
+
+def test_precedence_rank_follows_the_spec_order() -> None:
+    listed = re.findall(r"^\s+(\d)\. ([A-Z]+) —", spec.section("### 3.4"), re.M)
+    assert [(int(n), vocab.PrecedenceTier(name)) for n, name in listed] == [
+        (vocab.precedence_rank(tier), tier) for tier in vocab.PrecedenceTier
+    ]
 
 
 def test_severity_rank_orders_most_severe_first() -> None:

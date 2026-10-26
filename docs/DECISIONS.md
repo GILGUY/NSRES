@@ -267,6 +267,77 @@ nothing (plan Out list: the WCS I/O adapter is v0.3).
 
 ---
 
+## WP-030 decisions (canon registry, rule registry)
+
+Recorded before the WP-030 code was written.
+
+**D-017 — Structured canon statements.** `CanonRule.statement_structured` is a string (§10.2).
+The canon registry parses these statement forms, in the style of the §10.9 effect language;
+any other text is kept as an unparsed statement for later engines:
+
+| Form | Meaning |
+| --- | --- |
+| `travel(LOC-a, LOC-b, <mode>, <minutes>)` | Direct travel time by a mode, both directions; add `, oneway` for one direction |
+| `distance(LOC-a, LOC-b, <km>)` | Distance between two places, both directions |
+| `speed(<mode>, <km/h>)` | The fastest a mode can go (the L1 "speed rule") |
+| `timetable(LOC-a, LOC-b, <mode>, HH:MM, HH:MM)` | A daily scheduled departure and arrival; an arrival at or before the departure clock time is next day |
+| `daylight(YYYY-MM-DD, HH:MM, HH:MM)` | First light and last light on a date (the table-driven daylight model) |
+| `disambiguate(<handle>, <handle>, "<name>")` | Two entities may share this name or alias (the L1 "disambiguation record") |
+
+The metric forms require rule class METRIC. A malformed statement in a recognized form is a
+BLOCKING finding (RC-L1-0, D-018), because the record cannot be evaluated. Appendix A.1 lists
+CAN-014's class as "WORLD RULE", which is a content category of the L1 contents table, not
+one of the five §3.3 classes (ERR-14); the fixture gives CAN-014 class PROHIBITION, which is
+what its statement says. Story-time conversion uses a per-work epoch and the Gregorian
+calendar (A-09); 1893 dates are proleptic Gregorian in Python's `datetime`, which matches the
+calendar Britain used in 1893.
+
+**D-018 — Codes and severities for the L1 checks.** L1 "Contradiction detection" names its
+checks without rule codes (ERR-16) and grades two of them WARNING and ERROR, which are not
+finding severities (ERR-15). The registry uses codes in the RC family, which the B.4 rule
+pattern accepts, numbered after the L1 list:
+
+| Code | Check | Severity | Reason for the severity |
+| --- | --- | --- | --- |
+| RC-L1-0 | A recognized structured statement is malformed | BLOCKING | The record cannot be evaluated by any check |
+| RC-L1-2 | Two entities share a name or alias with no disambiguation record | MAJOR | It "requires a decision" (DEF-41); nothing is false yet |
+| RC-L1-3A | A declared direct travel time is longer than the shortest-path closure for that mode (the L1 WARNING) | MINOR | Movement checks use the closure anyway; usually a missing route rule |
+| RC-L1-3B | A declared travel time is shorter than its mode's speed rule allows over the declared distance (the L1 ERROR) | BLOCKING | The canon is physically impossible |
+| RC-L1-6 | Two records of the same precedence tier conflict (§3.4 item 6) | MAJOR | Goes to a human gate; the engine picks nothing |
+
+L1 checks 1 (rule-rule unsatisfiability) and 4 (backstory facts against invariants) need the
+state engine and are not in the plan's WP-030 build list; they arrive with reconciliation
+(G2, RC-03). Engine-detected findings carry provenance ENGINE_BRIDGE, the only engine-origin
+value in §10.2's `Provenance` (ERR-17).
+
+**D-019 — What "rule suite passes for the record in isolation" means.** The gate console's
+isolation check runs the record-scope canon checks on the record together with the current
+ACCEPTED and CANON canon, without events or other proposals. It passes when no BLOCKING
+finding involves the record (RC-L1-0, RC-L1-3B). MAJOR and MINOR findings are reported as
+findings, not refusals, because they ask for a decision rather than prove the record wrong.
+
+**D-020 — Precedence tiers.** The six §3.4 tiers are the closed vocabulary `PrecedenceTier`.
+A record's tier: PUBLISHED if its tier is PUBLISHED; INVARIANT for a CANON canon rule of
+class INVARIANT; DEFAULT for a canon rule of class DEFAULT at ACCEPTED or CANON (defaults
+"hold unless an event overrides them", so they rank below ACCEPTED events whatever their
+status); otherwise CANON or ACCEPTED by status; PROPOSAL for proposals. A conflict between
+different tiers resolves to the higher tier; a same-tier conflict returns an RC-L1-6 finding
+naming the gate (CANON for reality records, otherwise the record's acceptance gate) and no
+winner. Records with no tier (REJECTED, SLUSHED, DEPRECATED) take no part.
+
+**D-021 — Rule registry and finding factory.** A rule is a `RuleRecord` with the B.2 fields
+and a Python predicate (A-11). `severity` has `certain` and `possible` parts; `possible` may
+be TIGHTEN, an action that adds a constraint instead of raising a finding. Predicates yield
+detections or `Uncheckable` reasons; a run reports PASS only when it found nothing and
+nothing was uncheckable, otherwise FAIL or UNCHECKABLE, never PASS by default. The finding
+factory renders the B.2 message template into the finding's `notes`, copies the repair
+hints, and caps severity at MAJOR when a detection's evidence is weaker than CONTENT_READ
+(REQ-9.1.1: "only findings with CONTENT_READ evidence may be BLOCKING"). Findings from a run
+get handles `FND-R-01`, `FND-R-02`, ... in detection order. Registering a second rule with
+the same id is refused; changing a rule means a new version (REQ-11.2.1 item 7).
+
+---
+
 ## Spec errata (proposed for the batch patch at the end of G1; Patrick gates)
 
 Found while building WP-010 against NSRES-SPEC rev 126. Each is preserved here rather than
@@ -288,6 +359,10 @@ spec states unambiguously.
 | ERR-11 | §7.4, §8.2 D | UNRELIABLE appears in the POV-mode table while being a modifier; §8.2 D writes `narrator_beliefs` CONDITIONAL "(UNRELIABLE)" | D-004 rule 5 (`pov.unreliable`) | Add a `pov.unreliable` field to §8.2 D |
 | ERR-12 | §5.4, §0.7 | The record-lifecycle "Retire" row has no outcome code in the §0.7 gate table | D-013 item 4 (REJECT at the gate matching the status) | Add RETIRE to the outcome column, or name REJECT in the §5.4 row |
 | ERR-13 | §5.4 | The micro-fact registration row and both "Edit" rows state no rule-suite guard, unlike first acceptance and locking | D-013 item 5 (every transition into ACCEPTED or CANON runs the isolation check) | State the guard in those three rows |
+| ERR-14 | Appendix A.1, §3.3 | A.1 gives CAN-014 the class "WORLD RULE", which is not one of the five §3.3 classes; A.1 also writes METRIC and DEFAULT with sub-kinds in parentheses | D-017 (class by logical form; fixture uses PROHIBITION) | Use the §3.3 classes in A.1 and move the content kind to its own column |
+| ERR-15 | §4 L1 | Metric checks are graded WARNING and ERROR, which are not finding severities | D-018 (MINOR and BLOCKING) | Use the DEF-41 severities |
+| ERR-16 | §4 L1, B.1 | The four L1 contradiction checks and the §3.4 same-tier conflict have no rule codes | D-018 (RC-L1-0 to RC-L1-6) | Add the codes to B.1 |
+| ERR-17 | §10.2 | `Provenance` has no value for a deterministic engine detection | D-018 (ENGINE_BRIDGE) | Add ENGINE (or ENGINE_RULE) to `Provenance` |
 
 ---
 

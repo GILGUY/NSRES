@@ -1,0 +1,583 @@
+[
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c0-75ef-bb9c-fee3d8e1e861",
+      "handle": "CHR-001",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "CHARACTER",
+      "canonical_name": "Mara Voss",
+      "aliases": [
+        "Mrs. Voss"
+      ],
+      "fixed_traits": {
+        "role": "housekeeper"
+      },
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c1-7335-8d90-32888f369c49",
+      "handle": "CHR-002",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "CHARACTER",
+      "canonical_name": "Teodor Hale",
+      "aliases": [
+        "Inspector Hale",
+        "the Inspector"
+      ],
+      "fixed_traits": {
+        "rank": "inspector",
+        "affiliation": "York City Police",
+        "age": "52",
+        "gait": "walks with a cane"
+      },
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c2-7211-acc8-7fd3bb08cbd8",
+      "handle": "CHR-003",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "CHARACTER",
+      "canonical_name": "Edmund Harrow",
+      "aliases": [
+        "Lord Edmund Harrow",
+        "Lord Harrow"
+      ],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c3-70b8-8e9e-2272b26203ab",
+      "handle": "CHR-004",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "CHARACTER",
+      "canonical_name": "Jonah Pell",
+      "aliases": [
+        "Jonah"
+      ],
+      "fixed_traits": {
+        "role": "footman"
+      },
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c4-743e-9ec4-f9dd6ca8b4df",
+      "handle": "CHR-005",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "CHARACTER",
+      "canonical_name": "Celia Harrow",
+      "aliases": [
+        "Celia"
+      ],
+      "fixed_traits": {
+        "relation": "Edmund's niece and heir"
+      },
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c5-72b7-8c62-455effdea6a8",
+      "handle": "CHR-006",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "CHARACTER",
+      "canonical_name": "Mrs. Dorran",
+      "aliases": [],
+      "fixed_traits": {
+        "role": "cook"
+      },
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c6-74d8-bf91-45eabea146a2",
+      "handle": "LOC-001",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "LOCATION",
+      "canonical_name": "Harrow House",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c7-77d9-9697-3cb65e77017d",
+      "handle": "LOC-001a",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "LOCATION",
+      "canonical_name": "the study",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c8-77f2-9345-9ed802d2c91b",
+      "handle": "LOC-001c",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "LOCATION",
+      "canonical_name": "the servants' hall",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3c9-74fb-872a-96b12067d003",
+      "handle": "LOC-001d",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "LOCATION",
+      "canonical_name": "the kitchen",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3ca-71b2-b6bd-7ee0711db0db",
+      "handle": "LOC-001f",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "LOCATION",
+      "canonical_name": "Jonah's room",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3cb-72df-af59-93c3736f54b2",
+      "handle": "LOC-002",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "LOCATION",
+      "canonical_name": "The Bell",
+      "aliases": [
+        "the Bell"
+      ],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3cc-729d-a11d-2cbb3f4e1a48",
+      "handle": "LOC-003",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "LOCATION",
+      "canonical_name": "Kellby station",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3cd-7702-87dc-ffd8948fe7a7",
+      "handle": "LOC-004",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "LOCATION",
+      "canonical_name": "York station",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3ce-73da-87dd-84cb4e183957",
+      "handle": "GRP-001",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "GROUP",
+      "canonical_name": "Kellby village",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3cf-716a-b526-bec0a13d0f4e",
+      "handle": "OBJ-001",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "OBJECT",
+      "canonical_name": "the ledger",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {},
+      "significance": "PLOT_OBJECT"
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3d0-74a4-a930-6b2292097821",
+      "handle": "OBJ-002",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "OBJECT",
+      "canonical_name": "the study key",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {},
+      "significance": "CLUE"
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3d1-762f-baa1-049ed3368d26",
+      "handle": "OBJ-003",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "OBJECT",
+      "canonical_name": "the brandy decanter",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {},
+      "significance": "PLOT_OBJECT"
+    }
+  },
+  {
+    "type": "Entity",
+    "record": {
+      "uuid": "0192c4d2-c3d2-776f-8f31-1cfed421fba6",
+      "handle": "OBJ-004",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "kind": "OBJECT",
+      "canonical_name": "the key board",
+      "aliases": [],
+      "fixed_traits": {},
+      "persistent_defaults": {}
+    }
+  },
+  {
+    "type": "CanonRule",
+    "record": {
+      "uuid": "0192c4d2-c3d3-7142-91d8-5523fb7cc741",
+      "handle": "CAN-003",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "class": "INVARIANT",
+      "statement_structured": "invariant(not(acts(x)) or alive(x))",
+      "statement": "The dead do not act",
+      "exceptions": []
+    }
+  },
+  {
+    "type": "CanonRule",
+    "record": {
+      "uuid": "0192c4d2-c3d4-71e8-90c9-3642d3546e53",
+      "handle": "CAN-014",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "class": "PROHIBITION",
+      "statement_structured": "not(exists(telephone, LOC-001)); only(telegraph, LOC-003)",
+      "statement": "No telephone at Harrow House; telegraph only at Kellby station",
+      "exceptions": []
+    }
+  },
+  {
+    "type": "CanonRule",
+    "record": {
+      "uuid": "0192c4d2-c3d5-7005-ac3c-b13b8d5a078c",
+      "handle": "CAN-030",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "class": "DEFAULT",
+      "statement_structured": "default(LOC-001a.lock, LOCKED, night); default(OBJ-002.location, OBJ-004)",
+      "statement": "The study is locked at night; its key hangs on the servants' hall board",
+      "exceptions": []
+    }
+  },
+  {
+    "type": "CanonRule",
+    "record": {
+      "uuid": "0192c4d2-c3d6-7073-a077-b1c6ec2140bd",
+      "handle": "CAN-041",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "class": "METRIC",
+      "statement_structured": "audible(LOC-001a, east_corridor, voices)",
+      "statement": "Voices in the study are audible in the east corridor",
+      "exceptions": []
+    }
+  },
+  {
+    "type": "CanonRule",
+    "record": {
+      "uuid": "0192c4d2-c3d7-7696-9051-2210906a6c85",
+      "handle": "CAN-052",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "class": "DEFAULT",
+      "statement_structured": "default(servants.location, servants_quarters, 23:00, 05:30)",
+      "statement": "Servants are in the servants' quarters from 23:00 to 05:30 unless an event says otherwise",
+      "exceptions": []
+    }
+  },
+  {
+    "type": "CanonRule",
+    "record": {
+      "uuid": "0192c4d2-c3d8-764b-a3cc-e5202fe8ba51",
+      "handle": "CAN-060",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "class": "METRIC",
+      "statement_structured": "timetable(LOC-004, LOC-003, rail, 07:20, 09:05)",
+      "statement": "First train York to Kellby: departs 07:20, arrives 09:05",
+      "exceptions": []
+    }
+  },
+  {
+    "type": "CanonRule",
+    "record": {
+      "uuid": "0192c4d2-c3d9-7137-a42d-9da8c5626a94",
+      "handle": "CAN-061",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "class": "METRIC",
+      "statement_structured": "travel(LOC-001, LOC-002, carriage, 20); travel(LOC-003, LOC-001, carriage, 25)",
+      "statement": "Harrow House to The Bell: 20 minutes by carriage. Kellby station to Harrow House: 25 minutes by carriage",
+      "exceptions": []
+    }
+  },
+  {
+    "type": "CanonRule",
+    "record": {
+      "uuid": "0192c4d2-c3da-7354-a39e-150373d76e20",
+      "handle": "CAN-062",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "class": "METRIC",
+      "statement_structured": "travel(LOC-001, LOC-002, foot, 45)",
+      "statement": "Harrow House to The Bell: 45 minutes on foot",
+      "exceptions": []
+    }
+  },
+  {
+    "type": "CanonRule",
+    "record": {
+      "uuid": "0192c4d2-c3db-7533-8ed6-a6d74618ee1f",
+      "handle": "CAN-070",
+      "rev": 1,
+      "provenance": "AUTHOR",
+      "plane": "reality",
+      "tx": {
+        "from": 0,
+        "to": null
+      },
+      "status": "PROPOSAL",
+      "class": "METRIC",
+      "statement_structured": "daylight(1893-10-14, 06:43, 17:15); daylight(1893-10-15, 06:45, 17:13)",
+      "statement": "First and last light at Harrow House, 14 and 15 October 1893",
+      "exceptions": []
+    }
+  }
+]

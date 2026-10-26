@@ -69,3 +69,15 @@ new location: https://github.com/GILGUY/NSRES.git". The push still succeeded. Th
 set with `git remote set-url origin https://github.com/GILGUY/NSRES.git`. **Verified by:**
 `git push` output at the WP-010 commit, then `git fetch origin` against the new URL succeeded
 and `git status -sb` showed `main...origin/main` in sync.
+
+### E-7 amendment (WP-030)
+
+**Correction to E-7.** E-7 says the remote "was set with `git remote set-url origin
+https://github.com/GILGUY/NSRES.git`". That command did run and took effect at the time, but
+the setting did not persist: at WP-030, `git remote -v` showed `https://github.com/GILGUY/nsres`
+again. **Inferred — unverified:** the session's repository registration rewrites the remote
+when the working directory is re-attached; cheapest test: set the URL, end the turn, and read
+`git remote -v` in the next one. Either URL pushes successfully (verified at the WP-010 and
+WP-020 pushes), so the "repository moved" notice is harmless and the remote is left as the
+session sets it. The cursor's line naming `GILGUY/NSRES.git` as the remote is withdrawn by the
+WP-030 cursor.

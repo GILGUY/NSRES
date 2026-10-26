@@ -37,3 +37,20 @@ The spec example as printed fails validation on exactly seven omitted required f
 
 To regenerate the hashes after an intentional edit, load the file, pass it through
 `with_packet_hashes`, and write it back with two-space indentation.
+
+## `canon.json`
+
+The Harrow House canon as authored input: 28 rows of `{"type", "record"}` in the record JSON
+form (D-007), every record at PROPOSAL, ready to pass the store's gates. Generated once from
+the values below; UUIDs come from a seeded generator.
+
+| Records | Source | Authority |
+| --- | --- | --- |
+| CHR-001 to CHR-005, OBJ-001 to OBJ-003, GRP-001, and their names and traits | §0.3, §0.5, L1 entity example (Hale: "the Inspector", York City Police, age 52, cane) | Spec |
+| CHR-006 Mrs. Dorran (cook) | §4 L3 SCN-007 participants | Spec |
+| LOC-001 Harrow House, LOC-001a, LOC-001c, LOC-001d, LOC-001f, LOC-002 The Bell, OBJ-004 key board | §0.3, §8.4, Appendix A.2 | Spec |
+| LOC-003 Kellby station, LOC-004 York station | The spec names the places but gives them no handles | **Illustrative handles** |
+| CAN-003, CAN-014, CAN-030, CAN-041, CAN-052, CAN-060, CAN-061 statements | Appendix A.1 | Spec (CAN-014's class is PROHIBITION, not A.1's "WORLD RULE": D-017, ERR-14) |
+| CAN-062 (45 minutes on foot to The Bell) | L1 metrics example | Spec value, **illustrative handle** |
+| CAN-070 daylight rows | First light 06:45 on 15 October is the spec's (§4 L7 example); the other three times are composed to fit "dark from 22:40" | **Illustrative except 06:45** |
+| `statement_structured` texts | Written for this fixture in the D-017 forms; the non-metric ones are free text for later engines | Fixture |

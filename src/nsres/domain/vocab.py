@@ -345,6 +345,22 @@ GATE_OUTCOMES: dict[Gate, frozenset[GateOutcome]] = {
 """Outcomes allowed at each gate (§0.7). Micro-fact codes are decided at the CANON gate."""
 
 
+class PrecedenceTier(StrEnum):
+    """Canon precedence tiers, highest first (§3.4 item 5; DECISIONS D-020)."""
+
+    PUBLISHED = "PUBLISHED"
+    INVARIANT = "INVARIANT"
+    CANON = "CANON"
+    ACCEPTED = "ACCEPTED"
+    DEFAULT = "DEFAULT"
+    PROPOSAL = "PROPOSAL"
+
+
+def precedence_rank(tier: PrecedenceTier) -> int:
+    """1 for the highest tier (PUBLISHED) to 6 for the lowest (PROPOSAL)."""
+    return list(PrecedenceTier).index(tier) + 1
+
+
 class ModelVersionState(StrEnum):
     """Model version lifecycle (§5.4)."""
 
@@ -545,6 +561,7 @@ ALL_VOCABULARIES: tuple[type[StrEnum], ...] = (
     Gate,
     GateOutcome,
     ModelVersionState,
+    PrecedenceTier,
     PovMode,
     DeliveryMode,
     VisibilityClass,

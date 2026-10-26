@@ -253,3 +253,79 @@ lines are refused on open (D-012 item 4).
 - Spec errata ERR-1 to ERR-13 await the batch patch proposal at the end of G1.
 - E-2 and E-6 leave one environment claim unverified (whether `uv build` reached the
   network); not a blocker.
+
+---
+
+## WP-030 — Canon registry and rule registry
+
+**Gate:** G1 (records are trustworthy). **Spec:** NSRES-SPEC rev 126 (D-003). **Decisions
+recorded before the code:** D-017 to D-021 and errata ERR-14 to ERR-17 in `docs/DECISIONS.md`.
+
+### What was implemented
+
+| File | Contents |
+| --- | --- |
+| `src/nsres/canon/statements.py` | The D-017 structured statement forms (travel, distance, speed, timetable, daylight, disambiguate), `;`-separated statements with quote handling, and the per-work `Calendar` (minutes from epoch, Gregorian display) |
+| `src/nsres/canon/metrics.py` | `TravelNetwork`: per-mode Floyd-Warshall closure; time-dependent Dijkstra earliest arrival over travel legs and daily timetable services (FIFO), with the canon sources of the route; closure gaps; speed breaches with UNCHECKABLE for missing distances or speed rules; `DaylightModel` (DAYLIGHT, DARK, or UNCHECKABLE for a date with no row) |
+| `src/nsres/canon/identity.py` | Name and alias collisions, case-insensitive with whitespace collapsed, cleared only by a disambiguation covering the pair and the name |
+| `src/nsres/canon/precedence.py` | `tier_of` and `resolve` (D-020) |
+| `src/nsres/canon/registry.py` | `CanonRegistry`; the five L1 rules RC-L1-0, -2, -3A, -3B, -6 (D-018); `isolation_check` and `store_isolation_check` for the gate console (D-019) |
+| `src/nsres/rules/registry.py`, `factory.py` | `RuleRecord` (the B.2 fields), `SeveritySpec` with TIGHTEN, detections, `Uncheckable`, `RuleRegistry` (refuses duplicates and foreign configs; content digest), `RuleRun` (PASS, FAIL, UNCHECKABLE, tightenings); `FindingFactory` (FND-R-nn handles, rendered message in `notes`, repair hints, the REQ-9.1.1 cap) |
+| `src/nsres/domain/vocab.py` | `PrecedenceTier` and `precedence_rank` (A-17 test against §3.4 item 5) |
+| `fixtures/harrow-house/canon.json`, `README.md` | The Harrow House canon (28 records) with provenance; illustrative handles and values marked |
+| `tests/unit/test_canon.py`, `tests/unit/test_rules.py` | WP-030 tests |
+| `docs/ENVIRONMENT.md` | E-7 amendment (the remote URL change did not persist) |
+
+### Commands run
+
+| Command | Result |
+| --- | --- |
+| `uv run --frozen mypy src` (during the work) | 7 errors: one variable name reused across branches of `parse_one` with different types, and one in `speed_breaches`; both renamed. Then the `_record` helper's `**extra` needed three `type: ignore`s; replaced with typed keyword parameters |
+| `uv run --frozen ruff check src` (during the work) | RUF002 (an en dash in "Floyd-Warshall"), E501 |
+| `uv run --frozen pytest tests/unit/test_canon.py` (first run) | 1 failure, a test-data error: the planted distance (8 km at 15 km/h, minimum 32 min) also made the fixture's own CAN-061 (25 min) a breach. Distance changed to 6 km (minimum 24 min); rerun 43 passed. The extra finding was correct behavior |
+| `uv run --frozen mypy src tests scripts` (before closing) | 5 errors: tests reached vocabularies through `nsres.domain.records`, which does not re-export them; imported from `nsres.domain.vocab` |
+| `git remote -v` | `https://github.com/GILGUY/nsres`, not the URL E-7 recorded; amendment appended to `docs/ENVIRONMENT.md` |
+| `uv sync --frozen && uv run --frozen python scripts/gate.py` | **Exit 0. GATE PASS: 9/9 stages** (counts below) |
+
+Gate stage counts from the passing run:
+
+| Stage | Result |
+| --- | --- |
+| 1 format | 67 files already formatted |
+| 2 lint | All checks passed |
+| 3 typecheck | no issues found in 66 source files |
+| 4 unit | 2,125 passed (lifecycle 1,315; WCS crosswalk 332; handles 120; records 77; vocabulary 71; schemas 70; canon 43; store 41; canonical 29; rules 15; uuid7 7; smoke 3; verify_package 2) |
+| 5 integration | 4 passed |
+| 6 build | sdist and wheel built |
+| 7 package verify | wheel 45 files, sdist 45 files, 40 modules scanned, 0 network imports |
+| 8 reproducibility | 2 builds, 2 artifacts, identical digests |
+| 9 end-to-end | 2 flows passed against the installed wheel |
+
+### Exit criteria
+
+| Criterion | How it was met |
+| --- | --- |
+| A declared direct travel time longer than an indirect route raises the closure WARNING; one faster than the speed rule raises an ERROR | `test_a_direct_time_longer_than_the_closure_raises_the_closure_warning`: The Bell to Kellby station declared at 60 min against the 45 min path through Harrow House gives exactly one RC-L1-3A finding (MINOR, D-018) naming CAN-080, with the 60 and 45 in its message. `test_a_time_faster_than_the_speed_rule_raises_the_speed_error`: 5 min by carriage over 6 km at a 15 km/h speed rule (minimum 24 min) gives exactly one RC-L1-3B finding (BLOCKING) naming the travel, distance, and speed rules. The fixture canon alone produces neither; without distances the speed check reports UNCHECKABLE, not PASS |
+| Two entities sharing an alias without a disambiguation record produce an identity-collision finding | `test_two_entities_sharing_an_alias_produce_an_identity_collision` (CHR-002 "the Inspector" and a second entity aliased "The  Inspector": one RC-L1-2 finding, MAJOR, both handles). A disambiguation record clears it, and covers only its own pair and name |
+| A cross-tier conflict resolves to the higher tier; a same-tier conflict returns a gate-required finding and picks nothing | `test_a_cross_tier_conflict_resolves_to_the_higher_tier` (an ACCEPTED fact beats a DEFAULT canon rule; no finding). `test_a_same_tier_conflict_returns_a_gate_required_finding_and_picks_nothing` (two CANON facts: no winner, no loser, gate CANON, one RC-L1-6 finding naming both). Telling records go to their acceptance gate (STRUCTURE). All six tiers checked by `test_tiers_follow_section_3_4` |
+
+Spec-anchored values also checked: the earliest arrival from York at 07:00 on 15 October is
+09:30 through CAN-060 and CAN-061, as Appendix A.3's FND-R-01 states; the RES-0011 bridge
+(fetched from The Bell at 07:05) arrives 07:25; first light 06:45 on 15 October makes 07:40
+daylight and 22:40 on the 14th dark. The gate console refuses canon that breaks a speed rule
+or is malformed (GUARD_FAILED naming the rule) and accepts canon with only a MINOR closure
+finding (D-019).
+
+### Not done in WP-030 (by plan or by recorded decision)
+
+- L1 checks 1 (rule-rule unsatisfiability) and 4 (backstory against invariants): need the
+  state engine; G2 reconciliation (D-018).
+- Evaluating the free-text canon statements (invariants, prohibitions, defaults): later
+  engines read `CanonRegistry.unparsed`.
+- Movement checks (RC-08) use `TravelNetwork.earliest_arrival` in G2.
+
+### Open issues carried forward
+
+- Spec errata ERR-1 to ERR-17 await the batch patch proposal at the end of G1 (after WP-040).
+- E-7: the remote URL reverts to `GILGUY/nsres` between turns (inferred cause unverified);
+  pushes succeed either way.

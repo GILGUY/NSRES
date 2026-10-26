@@ -1,0 +1,453 @@
+{
+  "packet_uuid": "01920c3e-7a41-7c2b-9d1e-5f3a8b2c4d6e",
+  "packet_handle": "PKT-007-r3",
+  "schema_version": "0.1.0",
+  "scene_ref": "SCN-007",
+  "model_version": "canon@r12/truth@r47",
+  "extraction_run": "RUN-X-0212",
+  "status": "FROZEN",
+  "flags": [
+    "DEPENDENCY:SCN-006"
+  ],
+  "public": {
+    "position": {
+      "narrative_position": "1.03.2",
+      "story_time_range": {
+        "start": "1893-10-15T07:40",
+        "end": "1893-10-15T08:10",
+        "precision": "QUARTER_HOUR"
+      },
+      "previous_scene": "SCN-006",
+      "next_scene": "SCN-008",
+      "story_time_gap": {
+        "since_previous_scene": "PT0M"
+      },
+      "anachrony": "NONE",
+      "narration_stance": {
+        "tense": "past",
+        "narrating_time": "retrospective-close"
+      }
+    },
+    "setting": {
+      "location": {
+        "handle": "LOC-001c",
+        "name": "servants' hall"
+      },
+      "setting_state": [
+        "fire lit in the range",
+        "grey daylight from the high windows",
+        "key board on the east wall"
+      ],
+      "objects_present": [
+        {
+          "object": "OBJ-004 key board",
+          "state": "the study key's hook is empty"
+        }
+      ],
+      "perceptibles": [
+        "kitchen sounds through the open door"
+      ]
+    },
+    "pov": {
+      "character": "CHR-001",
+      "mode": "CLOSE_THIRD",
+      "permitted_interiority": [
+        "CHR-001"
+      ],
+      "naming_map": {
+        "CHR-002": "Inspector Hale",
+        "CHR-004": "Jonah",
+        "CHR-006": "Mrs. Dorran"
+      },
+      "voice_profile_ref": "VOICE-MARA-v2"
+    },
+    "threads": {
+      "active": [
+        {
+          "thread": "THR-01",
+          "rank": "primary",
+          "role": "FOREGROUND",
+          "nodes": [
+            "NOD-01-04"
+          ],
+          "priority": 6.0
+        },
+        {
+          "thread": "THR-04",
+          "rank": "secondary",
+          "role": "FOREGROUND",
+          "nodes": [
+            "NOD-04-02"
+          ],
+          "priority": 5.0
+        }
+      ],
+      "hidden": [
+        {
+          "sup_ref": "SUP-1",
+          "manifestations": [
+            {
+              "actor": "CHR-004",
+              "behavior": "answers in single words and does not meet Hale's eye",
+              "intensity": 2,
+              "permitted_explanation": "he says he slept badly",
+              "forbidden_explanations": [
+                "any mention of the study, the key, or anything he carried"
+              ]
+            }
+          ]
+        },
+        {
+          "sup_ref": "SUP-2",
+          "manifestations": [
+            {
+              "actor": "CHR-004",
+              "behavior": "once seems close to tears and turns to the window",
+              "intensity": 1,
+              "permitted_explanation": "the shock of the death",
+              "forbidden_explanations": [
+                "any personal tie to Lord Harrow beyond service"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "required_beats": [
+      {
+        "beat": "BT-007-01",
+        "type": "EXCHANGE",
+        "actors": [
+          "CHR-002"
+        ],
+        "outcome": "Hale asks the household to account for the night"
+      },
+      {
+        "beat": "BT-007-02",
+        "type": "PERCEPTION",
+        "actors": [
+          "CHR-001"
+        ],
+        "outcome": "Mara notices the empty hook on the key board",
+        "plants": "INF-008"
+      },
+      {
+        "beat": "BT-007-03",
+        "type": "REVELATION",
+        "actors": [
+          "CHR-001"
+        ],
+        "outcome": "Mara recalls seeing Jonah in the east corridor with a bundle"
+      },
+      {
+        "beat": "BT-007-04",
+        "type": "DECISION",
+        "actors": [
+          "CHR-001"
+        ],
+        "outcome": "Asked whom she saw, Mara names no one"
+      },
+      {
+        "beat": "BT-007-05",
+        "type": "EXCHANGE",
+        "actors": [
+          "CHR-002",
+          "CHR-001"
+        ],
+        "outcome": "Hale lets the answer stand; his manner shows he does not believe it"
+      },
+      {
+        "beat": "BT-007-06",
+        "type": "TRANSITION",
+        "actors": [
+          "CHR-002"
+        ],
+        "outcome": "Hale asks to be shown the study and leaves the hall"
+      }
+    ],
+    "information": {
+      "known_information": [
+        {
+          "inf": "INF-006",
+          "statement": "Mara saw Jonah in the east corridor at about 22:45 carrying a cloth-wrapped bundle",
+          "confidence": "CERTAIN",
+          "channel": "WITNESSED"
+        }
+      ],
+      "reader_known": [
+        {
+          "inf": "INF-009",
+          "statement": "Edmund was found dead in his bed",
+          "delivered_at": "1.02.1",
+          "mode": "SHOWN"
+        }
+      ],
+      "unknown_information": [
+        "Mara does not know what the bundle held or why Jonah carried it"
+      ],
+      "suppressed_information": [
+        "SUP-1",
+        "SUP-2"
+      ],
+      "forbidden_revelations": [
+        "Do not describe the bundle's contents, size, or shape, and let no one guess at it"
+      ],
+      "permitted_hints": [
+        {
+          "inf": "INF-008",
+          "max_explicitness": 2,
+          "guidance": "Mara notices the empty hook and draws no conclusion"
+        }
+      ],
+      "adjacent_not_delivered": [
+        "Mara must not conclude that Jonah took the key"
+      ]
+    },
+    "constraints": {
+      "continuity": [
+        {
+          "statement": "The study has been locked since 22:40; its key is not on the board",
+          "sources": [
+            "EVT-0104",
+            "CAN-030"
+          ]
+        },
+        {
+          "statement": "Hale walks with a cane",
+          "sources": [
+            "CHR-002"
+          ]
+        },
+        {
+          "statement": "Hale is of the York City Police",
+          "sources": [
+            "CHR-002"
+          ]
+        }
+      ],
+      "drafting": {
+        "words": [
+          2000,
+          2800
+        ],
+        "tense": "past",
+        "person": "third",
+        "forbidden_devices": [
+          "flashback",
+          "dream"
+        ]
+      },
+      "invention_policy": {
+        "FREE": [
+          "kitchen texture"
+        ],
+        "CONSTRAINED": [
+          "dialogue wording"
+        ],
+        "LOCKED": [
+          "names",
+          "times",
+          "who is present"
+        ]
+      },
+      "terminology": {
+        "locked": [
+          "Inspector Hale",
+          "York City Police"
+        ],
+        "forbidden": [
+          "Scotland Yard",
+          "detective",
+          "okay"
+        ]
+      }
+    },
+    "outcomes": {
+      "required": [
+        {
+          "kind": "READER",
+          "delta": "+INF-006",
+          "mode": "SHOWN"
+        },
+        {
+          "kind": "READER",
+          "delta": "+INF-008",
+          "mode": "HINTED"
+        },
+        {
+          "kind": "CHARACTER",
+          "delta": "CHR-001 intends to protect Jonah"
+        },
+        {
+          "kind": "CHARACTER",
+          "delta": "CHR-002 suspects Mara is holding something back",
+          "confidence": "SUSPECTED"
+        }
+      ],
+      "exit_state": "Hale leaves for the study at about 08:10; Jonah remains in the hall",
+      "hooks": [
+        "Q-03"
+      ],
+      "forbidden": [
+        "Mara must not learn what the bundle was"
+      ]
+    },
+    "character_states": [
+      {
+        "character": "CHR-001",
+        "presence": {
+          "interval": "whole scene",
+          "position": "head of the table"
+        },
+        "physical": [
+          "unhurt",
+          "has not slept"
+        ],
+        "possessions": [
+          "housekeeper's keys (not the study key)"
+        ],
+        "emotional_entry": "shaken but composed",
+        "emotional_exit_target": "resolved and guilty",
+        "goals_in_scene": [
+          "protect Jonah",
+          "keep her place"
+        ],
+        "stance": {
+          "CHR-002": "wary deference"
+        },
+        "known_secrets": [
+          {
+            "inf": "INF-006",
+            "statement": "her sighting of Jonah in the east corridor"
+          }
+        ]
+      },
+      {
+        "character": "CHR-002",
+        "presence": {
+          "interval": "from scene start until BT-007-06",
+          "position": "standing in the hall"
+        },
+        "physical": [
+          "walks with a cane"
+        ],
+        "goals_in_scene": [
+          "have each member of the household account for the night"
+        ],
+        "knowledge_bounds": [
+          "Hale treats the death as unexplained and asks only about movements and the locked study"
+        ],
+        "speech": "clipped and formal"
+      },
+      {
+        "character": "CHR-004",
+        "presence": {
+          "interval": "whole scene",
+          "position": "at the table"
+        },
+        "physical": [
+          "unhurt"
+        ],
+        "goals_in_scene": [
+          "get through the questioning without drawing attention"
+        ],
+        "knowledge_bounds": [
+          "Jonah answers only what he is asked, in as few words as he can"
+        ]
+      },
+      {
+        "character": "CHR-006",
+        "presence": {
+          "interval": "whole scene",
+          "position": "at the range"
+        },
+        "physical": [
+          "unhurt"
+        ],
+        "goals_in_scene": [
+          "keep the household's breakfast going"
+        ],
+        "knowledge_bounds": [
+          "Mrs. Dorran speaks only of the household's ordinary routine of the night"
+        ]
+      }
+    ],
+    "emotion": {
+      "scene_tone_target": "contained dread under household formality",
+      "tension_shape": [
+        "rises to BT-007-04",
+        "settles at BT-007-06"
+      ],
+      "narrative_pressure": {
+        "before": {
+          "Q": 4,
+          "D": 0,
+          "T": 2,
+          "S": 1,
+          "I": 0
+        },
+        "target_after": {
+          "Q": 5,
+          "D": 0,
+          "T": 2,
+          "S": 2,
+          "I": 0
+        }
+      }
+    }
+  },
+  "sealed": {
+    "suppressed": {
+      "SUP-1": "INF-002",
+      "SUP-2": "INF-004"
+    },
+    "forbidden_propositions": [
+      "INF-002",
+      "INF-003",
+      "INF-004",
+      "INF-005"
+    ],
+    "leak_indicators": {
+      "INF-002": [
+        "ledger",
+        "account book",
+        "book-shaped"
+      ],
+      "INF-004": [
+        "son",
+        "his father",
+        "resemblance"
+      ]
+    }
+  },
+  "validation": {
+    "pre_draft_checks": "ALL_PASS",
+    "leak_probe_results": [
+      {
+        "sup": "SUP-1",
+        "score": 0.08,
+        "threshold": 0.25
+      },
+      {
+        "sup": "SUP-2",
+        "score": 0.11,
+        "threshold": 0.25
+      }
+    ],
+    "autopsy_targets": [
+      "Mara names no one to Hale",
+      "The bundle is not described",
+      "The hook is shown empty"
+    ]
+  },
+  "sources_ref": "PKT-007-r3#sources",
+  "exclusions_ref": "RUN-X-0212#exclusions",
+  "confidence_vector_ref": "CV-PKT-007-r3",
+  "gate_record": {
+    "gate": "STRUCTURE",
+    "actor": "author",
+    "time": "2026-10-25T19:02Z"
+  },
+  "packet_hash": "sha256:943e590aed3f7f93ccf1d3385113fac842d94c8d873b6cf17cb4f8deb7a13b52",
+  "public_hash": "sha256:0187a8c988d25de45b44616a64480c9d9b237c180f0e90ef9a2368332fc450aa"
+}

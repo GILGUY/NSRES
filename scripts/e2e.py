@@ -1,7 +1,9 @@
 """Gate stage 9: install the built wheel into a fresh environment and run the CLI flows.
 
-WP-000 checks only that the installed ``nsres --version`` equals the ``pyproject.toml``
-version. Later packages add the Appendix A and §17.8 flows against ``fixtures/golden/``.
+WP-000 checks that the installed ``nsres --version`` equals the ``pyproject.toml`` version.
+WP-010 adds that the installed package validates the completed §8.4 packet and verifies its
+hashes, run in isolated mode so the checkout's ``src/`` cannot stand in for the wheel. Later
+packages add the Appendix A and §17.8 flows against ``fixtures/golden/``.
 """
 
 from __future__ import annotations
@@ -13,7 +15,18 @@ import tempfile
 from collections.abc import Callable
 from pathlib import Path
 
-from buildenv import DIST, project_version
+from buildenv import DIST, ROOT, project_version
+
+PACKET_FIXTURE = ROOT / "fixtures" / "harrow-house" / "PKT-007-r3.example.json"
+
+PACKET_PROBE = """
+import json, sys
+import nsres.domain.schemas as schemas
+from nsres.domain.canonical import verify_packet_hashes
+packet = json.load(open(sys.argv[1], encoding=\"utf-8\"))
+print(schemas.__file__)
+print(len(schemas.packet_errors(packet)), len(verify_packet_hashes(packet)))
+"""
 
 
 def _install(venv: Path, wheel: Path) -> Path:
@@ -42,13 +55,32 @@ def check_version(cli: Path, version: str) -> str | None:
     return None
 
 
+def check_packet_fixture(cli: Path, version: str) -> str | None:
+    python = cli.parent / "python"
+    result = subprocess.run(
+        [str(python), "-I", "-c", PACKET_PROBE, str(PACKET_FIXTURE)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    lines = result.stdout.strip().splitlines()
+    if result.returncode != 0 or len(lines) != 2:
+        return f"packet fixture: probe failed ({result.returncode}): {result.stderr.strip()}"
+    module, counts = lines
+    if not module.startswith(str(cli.parent.parent)):
+        return f"packet fixture: imported {module}, not the installed wheel"
+    if counts != "0 0":
+        return f"packet fixture: expected 0 schema errors and 0 hash problems, got {counts}"
+    return None
+
+
 def main() -> int:
     version = project_version()
     wheel = DIST / f"nsres-{version}-py3-none-any.whl"
     if not wheel.exists():
         print(f"missing wheel {wheel}; run the build stage first")
         return 1
-    checks: list[Callable[[Path, str], str | None]] = [check_version]
+    checks: list[Callable[[Path, str], str | None]] = [check_version, check_packet_fixture]
     with tempfile.TemporaryDirectory() as tmp:
         cli = _install(Path(tmp) / "venv", wheel)
         failures = [message for check in checks if (message := check(cli, version)) is not None]

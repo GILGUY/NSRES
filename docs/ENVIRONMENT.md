@@ -50,3 +50,22 @@ repository at two concurrent smart-HTTP operations. **Verified by:** `gh` failur
 the session; the add-repository result's stated limits. Before pushing from the shallow clone,
 `git fetch origin main` so the push sends a thin pack (a stale shallow push can be rejected
 with HTTP 413).
+
+## E-6 `UV_NATIVE_TLS` is deprecated in uv 0.11.32
+
+Every uv command prints "The `UV_NATIVE_TLS` environment variable is deprecated ... Use
+`UV_SYSTEM_CERTS` instead." The warning is harmless. During WP-010 and WP-020 the session ran
+uv with `UV_SYSTEM_CERTS=1` and `UV_NATIVE_TLS` unset. **Verified by:** with that setting,
+`uv sync --frozen` and the full gate (including the isolated `uv build` and the e2e `uv pip
+install` of the wheel) passed 9/9, with no warning. This does not settle E-2's inferred claim
+about unsetting `UV_NATIVE_TLS` *without* setting `UV_SYSTEM_CERTS`; that claim stays
+unverified. **Inferred — unverified:** the build may have used uv's cache rather than the
+network; cheapest test: `uv cache clean` then rerun the gate with the same setting.
+
+## E-7 The GitHub repository moved to `GILGUY/NSRES`
+
+Pushing to `https://github.com/GILGUY/nsres` printed "This repository moved. Please use the
+new location: https://github.com/GILGUY/NSRES.git". The push still succeeded. The remote was
+set with `git remote set-url origin https://github.com/GILGUY/NSRES.git`. **Verified by:**
+`git push` output at the WP-010 commit, then `git fetch origin` against the new URL succeeded
+and `git status -sb` showed `main...origin/main` in sync.

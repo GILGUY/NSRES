@@ -173,3 +173,83 @@ Gate stage counts from the passing run:
 - Two fixture completions are illustrative, not spec values (character states for CHR-004 and
   CHR-006; `narrative_pressure.target_after`); `fixtures/harrow-house/README.md` says so. No
   test treats them as expected engine output.
+
+---
+
+## WP-020 — Record store, statuses, typed gates, audit
+
+**Gate:** G1 (records are trustworthy). **Spec:** NSRES-SPEC rev 126 (D-003). **Decisions
+recorded before the code:** D-012 to D-016 and errata ERR-12, ERR-13 in `docs/DECISIONS.md`.
+
+### What was implemented
+
+| File | Contents |
+| --- | --- |
+| `src/nsres/store/log.py` | The two append-only JSON Lines logs (`log/records.jsonl`, one line per transaction; `log/audit.jsonl`, one hash-chained line per row), fsync per line, and verification: torn or non-JSON lines, consecutive transaction numbers, the chain, and exact row-to-audit coverage by `ref_hash` |
+| `src/nsres/store/lifecycle.py` | The 11 rows of the §5.4 record-lifecycle table as data; `plan_decision` (pure); `acceptance_gate`; micro-fact detection; 22 named `Refusal` reasons |
+| `src/nsres/store/store.py` | `Store` (create, open with verification, current / history / as-of / changed-between / valid-at reads, dependents, snapshot and digest); `GateConsole` (`decide`, `waive_finding`, `mark_detector_error`, `approve_resolutions`, `tag_release`, author `propose`); `EngineWriter` (`propose` typed `Literal[Status.PROPOSAL]`, `record_finding`, `mark_finding_resolved`, reconciliation version states). One `_apply` path serves writes and replay |
+| `src/nsres/store/artifacts.py` | Content-addressed artifact store with hash re-check on read |
+| `src/nsres/wcs/crosswalk.py` | The three §0.7 crosswalk tables as data (12 state rows, 8 gate rows, 8 decision rows), the three WCS vocabularies, and the pure `import_decision` |
+| `src/nsres/domain/records.py`, `vocab.py` | D-015 extensions: `AuditRecord.tx/ref/ref_hash`, `GateRecord.retcon/successor`, `ModelVersion`, `ModelVersionState` (A-17 test against §5.4) |
+| `tests/builders.py` | Record builders, an advancing UTC clock, a seeded UUIDv7 source, a marked isolation check |
+| `tests/unit/test_lifecycle.py`, `test_store.py`, `test_wcs_crosswalk.py`; `tests/integration/test_engine_typing.py` | WP-020 tests |
+| `docs/ENVIRONMENT.md` | E-6 (`UV_SYSTEM_CERTS`), E-7 (repository moved to `GILGUY/NSRES`) |
+
+### Commands run
+
+| Command | Result |
+| --- | --- |
+| `uv run --frozen ruff check src` (during the work) | N818 on the two exception names (renamed `StoreCorruptError`, `ArtifactCorruptError`, and the D-012 text with them); three E501 |
+| `uv run --frozen mypy src` (during the work) | One error: the runtime guard in `EngineWriter.propose` was unreachable to mypy because the parameter is `Literal[Status.PROPOSAL]`. Kept the guard for untyped callers by comparing through an `object`-typed local |
+| `uv run --frozen pytest tests/unit/test_lifecycle.py -x` (first run) | 1 failure: `reality-CANON-None-PROPOSAL-REVISE`. The planner refused (WRONG_GATE); the test oracle allowed it. **Verified by:** D-013 item 6 makes REVISE legal only where the gate could decide the record now, and the PROPOSAL gate cannot decide a CANON record. The oracle was wrong, not the planner; the same reading applied to REJECT on CANON records (only at the CANON gate). Oracle corrected; rerun 1,315 passed |
+| `uv run --frozen pytest tests/unit/test_store.py` (first runs) | 3 failures, all test errors: a re-pointed fact still named CHR-004 in its object; SHIP at the SHIP gate on a PROPOSAL is NO_TRANSITION, not OUTCOME_NOT_AT_GATE (both cases now asserted); the busy store writes exactly 20 audit lines (assertion made exact) |
+| `uv run --frozen mypy src tests scripts` (before closing) | 3 errors in tests: mypy narrowed `store.model_version.state` across calls (read through a function now); untyped lambdas in a dict (typed); a sample lookup by position broke when ModelVersion was appended (looked up by type) |
+| `uv sync --frozen && uv run --frozen python scripts/gate.py` | **Exit 0. GATE PASS: 9/9 stages** (counts below) |
+
+Gate stage counts from the passing run:
+
+| Stage | Result |
+| --- | --- |
+| 1 format | 58 files already formatted |
+| 2 lint | All checks passed |
+| 3 typecheck | no issues found in 57 source files |
+| 4 unit | 2,065 passed (lifecycle 1,315; WCS crosswalk 332; handles 120; records 77; schemas 70; vocabulary 69; store 41; canonical 29; uuid7 7; smoke 3; verify_package 2) |
+| 5 integration | 4 passed (engine typing 2, vocabulary drift 1, smoke 1) |
+| 6 build | sdist and wheel built |
+| 7 package verify | wheel 38 files, sdist 38 files, 33 modules scanned, 0 network imports |
+| 8 reproducibility | 2 builds, 2 artifacts, identical digests |
+| 9 end-to-end | 2 flows passed against the installed wheel |
+
+### Exit criteria
+
+| Criterion | How it was met |
+| --- | --- |
+| Each row of the record-lifecycle table is a passing test, and every transition not in the table is rejected with a named reason | `test_store.py::test_row_01` to `test_row_11` run each §5.4 row end to end through the store (row 2 for all four acceptance gates; row 3 at all four gates with REJECT; row 9 including the PUBLISHED-canon RETCON; row 10 for ACCEPTED and CANON, blocked until dependents are re-pointed). `test_lifecycle.py` checks the 11 rules against the §5.4 table text, then runs `plan_decision` over all 1,305 combinations of 5 record kinds, every reachable status and tier, 5 gates, and 9 outcomes against an oracle written separately in the test; every combination the oracle forbids comes back `Refused` with a `Refusal` reason and a detail. `test_every_refusal_writes_nothing` shows refused requests leave both logs and the projection digest unchanged |
+| Altering any one audit line makes chain verification fail at that line | `test_altering_any_audit_line_fails_verification_at_that_line`: for each of the 20 audit lines of a busy store, a copy with that one line edited reports exactly `audit line N: hash does not match its content` and `Store.open` refuses naming line N. A recomputed hash moves the failure to the next link (`prev_hash does not match line N`); an edited record-log row is reported as uncovered |
+| Reloading from disk yields state deep-equal and hash-equal to the in-memory state | `test_reloading_yields_a_deep_equal_and_hash_equal_state` (snapshot equality, digest equality, identical audit trail, same model version); `test_a_reloaded_store_keeps_writing_a_valid_chain` writes after reload, verifies, and reloads again |
+| An attempt through any engine API to set ACCEPTED or CANON fails the type check (a `mypy` test) and fails at runtime | `tests/integration/test_engine_typing.py` runs `mypy --strict` on a correct snippet (exit 0) and on one that passes `Status.ACCEPTED` and `status=Status.CANON` to `EngineWriter.propose` and calls `decide` and `set_tier` on it (exit 1, exactly those 4 errors). Runtime: `test_engine_writer_refuses_any_status_but_proposal_at_runtime` (NOT_PROPOSAL for an ACCEPTED request, a CANON record, and a PUBLISHED record) |
+| Per OQ-10: waiving a BLOCKING finding is refused, never both cleared and uncapped | `test_a_blocking_finding_cannot_be_waived_and_stays_open` (BLOCKING_NOT_WAIVABLE; the finding stays OPEN; logs and digest unchanged). A MAJOR finding is waived only with an actor and reason, through an override gate record. A BLOCKING finding closes as RESOLVED (engine, inputs changed) or DETECTOR_ERROR (human) |
+| OQ-8: each of the 11 WCS states, 8 gate types, and 8 decisions maps to exactly one crosswalk row; RAW or INTAKE import is refused; a WCS CANON `story_blueprint` imports per OQ-9 | `test_wcs_crosswalk.py`: vocabularies equal the §0.7 table columns and cover `modules.json`; each table row matches its spec row; every state maps to exactly one row for each of the 23 primary artifact types (CANON splits by type); each gate and decision has exactly one row; RAW and INTAKE refused for all 23 types citing REQ-12.2.2; `story_spine`, `story_blueprint`, `recut_proposal` at CANON import as ACCEPTED and structure-locked |
+
+Also: `test_every_log_line_is_fsynced_before_the_write_returns` counts one `os.fsync` per
+appended line (5 lines, 5 calls). Torn final lines and transactions missing their audit
+lines are refused on open (D-012 item 4).
+
+### Not done in WP-020 (by plan or by recorded decision)
+
+- Crash repair: v0.1 detects a torn or incomplete transaction and refuses to open; it does
+  not repair (D-012 item 4).
+- The real isolation check comes from the rule registry (WP-030); the console requires one
+  explicitly, with no default (D-013 item 7).
+- Engine-proposed changes to ACCEPTED or CANON records (for example the autopsy window
+  collapse) will use the gate's `revision=` path; the pending-proposal mechanism arrives with
+  the autopsy package.
+- Staleness marking (REQ-5.4.4) belongs to the packet pipeline; every `GateResult` returns
+  the changed record so that package can react.
+- No WCS reads or writes (D-016; plan Out list).
+
+### Open issues carried forward
+
+- Spec errata ERR-1 to ERR-13 await the batch patch proposal at the end of G1.
+- E-2 and E-6 leave one environment claim unverified (whether `uv build` reached the
+  network); not a blocker.

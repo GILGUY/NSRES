@@ -345,6 +345,16 @@ GATE_OUTCOMES: dict[Gate, frozenset[GateOutcome]] = {
 """Outcomes allowed at each gate (§0.7). Micro-fact codes are decided at the CANON gate."""
 
 
+class ModelVersionState(StrEnum):
+    """Model version lifecycle (§5.4)."""
+
+    OPEN = "OPEN"
+    RECONCILING = "RECONCILING"
+    CONSISTENT = "CONSISTENT"
+    INCONSISTENT = "INCONSISTENT"
+    RELEASED = "RELEASED"
+
+
 class PovMode(StrEnum):
     """POV mode (§7.4). UNRELIABLE is a modifier, carried as ``pov.unreliable``."""
 
@@ -534,6 +544,7 @@ ALL_VOCABULARIES: tuple[type[StrEnum], ...] = (
     PacketFlag,
     Gate,
     GateOutcome,
+    ModelVersionState,
     PovMode,
     DeliveryMode,
     VisibilityClass,

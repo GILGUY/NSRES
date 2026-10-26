@@ -47,6 +47,16 @@ def _pov_modes() -> list[str]:
     return [mode for mode in modes if mode != "UNRELIABLE"]
 
 
+def _model_version_states() -> list[str]:
+    block = spec.section("### 5.4")
+    sources = spec.table_column(block, "**Model version lifecycle.**", 0)
+    targets = spec.table_column(block, "**Model version lifecycle.**", 3)
+    states: set[str] = set()
+    for cell in sources + targets:
+        states |= set(re.findall(r"\b[A-Z]{4,}\b", cell))
+    return sorted(states)
+
+
 def _audit_kinds() -> list[str]:
     phrases = spec.listed(r"\| Audit log \| ([^|]+) \|", spec.section("### 10.4"))
     normalized = {
@@ -158,6 +168,7 @@ SOURCES: dict[type[StrEnum], list[tuple[str, Source]]] = {
             lambda: sorted({o for _, row in _gate_table() for o in row} | set(_micro_fact_codes())),
         )
     ],
+    vocab.ModelVersionState: [("§5.4 model version lifecycle", _model_version_states)],
     vocab.PovMode: [("§7.4 POV modes", _pov_modes)],
     vocab.DeliveryMode: [("§7.7 RV-1", lambda: spec.listed(r"planned mode \(([^)]+)\)"))],
     vocab.VisibilityClass: [

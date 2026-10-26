@@ -175,6 +175,98 @@ closed vocabulary `MechanicsEffectOp`; parsing the textual effect language stays
 
 ---
 
+## WP-020 decisions (record store, gates, audit)
+
+Recorded before the WP-020 code was written.
+
+**D-012 — Store layout, transactions, and the audit chain.**
+1. **Files.** A project directory holds `log/records.jsonl` (the record log), `log/audit.jsonl`
+   (the audit log), and `artifacts/sha256/<hex>.json` (the content-addressed artifact store;
+   spec §10.4, plan A-05). Both logs are opened in append mode; every line is canonical JSON
+   followed by a newline and is fsynced before the call returns.
+2. **Transactions.** One store operation is one transaction `tx` (1, 2, 3, ...). Its record-log
+   line is `{"tx": n, "rows": [{"type": <class name>, "record": <to_json>}, ...]}`, so the
+   rows of one transaction land in one fsynced line. Every row is a record revision, a gate
+   record, or a model-version state.
+3. **Audit chain.** Every row has exactly one audit line, written after the record-log line.
+   An audit line is an `AuditRecord` (spec REQ-5.4.1 fields) extended with `tx`, `ref` (the
+   uuid of the row it covers), and `ref_hash` (the content hash of that row). `hash` is the
+   content hash of the line without its `hash` field, and `prev_hash` is the previous line's
+   `hash`, so editing any audit line, or any record-log row, is detected on verification.
+   Kinds: TRANSITION for a record revision or model-version change (from-state `(new)` for a
+   record's first row, as the §5.4 table writes it), GATE for a gate record.
+4. **Recovery.** A torn or unparsable final line, a transaction without its audit lines, or a
+   broken chain makes `Store.open` refuse with `StoreCorruptError` naming the file and line. v0.1
+   detects; it does not repair. (Crash repair is not in the plan's WP-020 build list.)
+5. **Bitemporal rows.** A revision row stores `tx.from` = its transaction and `tx.to` = null.
+   Reads fill `tx.to` from the next revision of the same handle, so the log stays append-only.
+6. **Model versions.** `ModelVersion` rows (number, state, opened at tx, and the two counters)
+   follow the §5.4 version lifecycle. When a version becomes CONSISTENT it fixes its label
+   `canon@r<c>/truth@r<t>`: `t` is the transaction number and `c` counts the transactions so
+   far that changed a CANON record (the spec's "canon registry version"). Before then the
+   label is `open-<number>`. A gate decision that changes an ACCEPTED or CANON record while
+   the version is CONSISTENT or RELEASED opens the next version; the old one stays readable
+   through `as_of`.
+
+**D-013 — How the §5.4 record-lifecycle table maps to gate outcomes.**
+1. Rows are data (`nsres.store.lifecycle.LIFECYCLE`), one per §5.4 row, and the test suite
+   checks them against the spec table.
+2. The acceptance gate of a PROPOSAL record is STRUCTURE for telling-plane records,
+   INTEGRATION for drafts and resolution records (§0.7 typed gates: "draft acceptance",
+   "contradiction resolutions"), and PROPOSAL otherwise.
+3. A micro-fact is a reality-plane PROPOSAL with provenance DRAFT_EMERGENT. The CANON gate
+   decides it with ACCEPT_AND_REGISTER or REJECT_MICRO_FACT only (§0.7: "decides it with one
+   of two codes"), so the general PROPOSAL rows do not apply to it.
+4. "Retire" (ACCEPTED or CANON → DEPRECATED) is the REJECT outcome at the gate matching the
+   record's status: the gate that accepted it, or CANON for CANON records. §0.7 gives
+   retirement no outcome code (ERR-12); the WCS crosswalk's DELETE_GATE row maps to the
+   same REJECT. The guard "every dependent re-pointed" is computed: no live record (PROPOSAL,
+   ACCEPTED, CANON) may still mention the handle. A successor may be named.
+5. An edit is ACCEPT (ACCEPTED records, at the gate that accepted them) or CANONIZE (CANON
+   records) with a `revision`: same class, uuid, handle, status, and tier, and `rev` one
+   higher. Editing PUBLISHED canon needs `retcon` passages. Every transition into ACCEPTED
+   or CANON runs the isolation check: rows 2 and 7 state it, rows 5, 8, and 9 do not
+   (ERR-13), and skipping it there would let in content that first acceptance refuses.
+6. REVISE and HOLD change nothing and are legal where the gate could decide the record now.
+   Every other (status, gate, outcome) combination is refused with a named reason
+   (`nsres.store.Refusal`), and a refused request writes nothing.
+7. The isolation check ("rule suite passes for the record in isolation") is a required
+   constructor argument of the gate console, with no default, so no code path passes a guard
+   by omission. The rule registry (WP-030) supplies the real check.
+
+**D-014 — Engine and human write paths.** Engines get an `EngineWriter`: propose a record or a
+revised proposal, record a finding, mark a finding RESOLVED, and run the reconciliation
+states of the model version. Its `propose` takes `status: Literal[Status.PROPOSAL]`, and it
+has no method that takes any other record status or a tier, so asking an engine path for
+ACCEPTED, CANON, or PUBLISHED is a `mypy` error and is refused at runtime too (plan A-08).
+Every other status change goes through the `GateConsole`, which writes a gate record and its
+audit lines. Waivers (REQ-9.1.2): only MAJOR, MINOR, or INFO findings, only with an actor and
+a reason, recorded as an override gate record; a BLOCKING finding is refused (OQ-10).
+
+**D-015 — Extensions to WP-010 record types.** WP-010 declared the audit chain as WP-020 work.
+WP-020 adds optional fields, without changing any existing field: `AuditRecord.tx`, `ref`,
+`ref_hash`; `GateRecord.retcon` (affected published passages) and `GateRecord.successor`;
+the `ModelVersion` record; and the closed vocabulary `ModelVersionState` (§5.4). This is an
+extension, not a reopening of WP-010: WP-010's exit criteria did not claim them.
+
+**D-016 — The WCS crosswalk as data (OQ-8, OQ-9).** `nsres.wcs` holds the three §0.7
+crosswalk tables as data rows, the three closed WCS vocabularies they use (11 artifact
+states, 8 gate types, 8 decisions; tested against the §0.7 tables and against
+`fixtures/wcs/modules.json`), and one pure function, `import_decision`. It reads and writes
+nothing (plan Out list: the WCS I/O adapter is v0.3).
+- The CANON state is two rows, chosen by artifact type: `story_spine`, `story_blueprint`,
+  and `recut_proposal` map to ACCEPTED and structure-locked (OQ-9); any other CANON artifact
+  (a fact, entity, or world rule) maps to CANON.
+- `import_decision` refuses RAW and INTAKE (REQ-12.2.2), any artifact whose WCS validator
+  status is FAIL (quarantined by WCS), and FORK (canon branches are out of v0.1 scope). A
+  SUPERSEDED artifact maps to DEPRECATED and needs its successor. SHIP is not a record
+  import; it maps to the SHIP-gate outcome.
+- The function returns a mapping, not a write. Whatever later imports WCS material must
+  still create records through the store's write paths (D-014), so no import can set a
+  status outside the gate API.
+
+---
+
 ## Spec errata (proposed for the batch patch at the end of G1; Patrick gates)
 
 Found while building WP-010 against NSRES-SPEC rev 126. Each is preserved here rather than
@@ -194,6 +286,8 @@ spec states unambiguously.
 | ERR-9 | §4 L6, §8.2 G | SCN-007 Mara's entry state is "frightened, controlled" (L6) and "shaken but composed" (§8.2 G) | Fixture uses §8.2 (fixtures/harrow-house/README.md) | Use one wording in both places |
 | ERR-10 | B.4, §10.2 | B.4 omits the `BaseRecord` fields and marks `spans` and `repairs` optional where §10.2 requires them | D-004 rule 6 | Add the fields to B.4 |
 | ERR-11 | §7.4, §8.2 D | UNRELIABLE appears in the POV-mode table while being a modifier; §8.2 D writes `narrator_beliefs` CONDITIONAL "(UNRELIABLE)" | D-004 rule 5 (`pov.unreliable`) | Add a `pov.unreliable` field to §8.2 D |
+| ERR-12 | §5.4, §0.7 | The record-lifecycle "Retire" row has no outcome code in the §0.7 gate table | D-013 item 4 (REJECT at the gate matching the status) | Add RETIRE to the outcome column, or name REJECT in the §5.4 row |
+| ERR-13 | §5.4 | The micro-fact registration row and both "Edit" rows state no rule-suite guard, unlike first acceptance and locking | D-013 item 5 (every transition into ACCEPTED or CANON runs the isolation check) | State the guard in those three rows |
 
 ---
 

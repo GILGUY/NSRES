@@ -56,6 +56,7 @@ from nsres.domain.vocab import (
     MechanicAxis,
     MechanicClass,
     MechanicsEffectOp,
+    ModelVersionState,
     ParticipantRole,
     Plane,
     PovMode,
@@ -1085,6 +1086,8 @@ class GateRecord:
     reason: str | None = None
     override: bool = False
     confirmation: str | None = None
+    retcon: tuple[str, ...] = ()
+    successor: str | None = None
 
     def __post_init__(self) -> None:
         _check_uuid7(self.uuid, "uuid")
@@ -1103,7 +1106,11 @@ class GateRecord:
 
 @dataclass(frozen=True, kw_only=True)
 class AuditRecord:
-    """One line of the hash-chained audit log (§10.4, REQ-5.4.1). Chaining is WP-020."""
+    """One line of the hash-chained audit log (§10.4, REQ-5.4.1).
+
+    ``tx``, ``ref``, and ``ref_hash`` tie the line to the record-log row it covers (D-012,
+    D-015); ``nsres.store`` always sets them.
+    """
 
     seq: int
     uuid: str
@@ -1117,9 +1124,16 @@ class AuditRecord:
     timestamp: str
     prev_hash: str | None
     hash: str
+    tx: int | None = None
+    ref: str | None = None
+    ref_hash: str | None = None
 
     def __post_init__(self) -> None:
         _require(self.seq >= 0, f"seq {self.seq} is negative")
+        _require(
+            self.ref_hash is None or _SHA256_REF.fullmatch(self.ref_hash) is not None,
+            f"ref_hash {self.ref_hash!r} is malformed",
+        )
         _check_uuid7(self.uuid, "uuid")
         _require(_INSTANT_UTC.fullmatch(self.timestamp) is not None, "timestamp is not UTC")
         _require(_SHA256_REF.fullmatch(self.hash) is not None, f"hash {self.hash!r} is malformed")
@@ -1133,6 +1147,33 @@ class AuditRecord:
                 self.from_state is not None and self.to_state is not None,
                 "a transition records its from-state and to-state",
             )
+
+
+@dataclass(frozen=True, kw_only=True)
+class ModelVersion:
+    """One state of a model version (§5.4 version lifecycle; DECISIONS D-012 item 6)."""
+
+    uuid: str
+    number: int
+    state: ModelVersionState
+    opened_tx: int
+    canon_rev: int | None = None
+    truth_rev: int | None = None
+
+    def __post_init__(self) -> None:
+        _check_uuid7(self.uuid, "uuid")
+        _require(self.number >= 1, f"version number {self.number} must be at least 1")
+        fixed = self.state in (ModelVersionState.CONSISTENT, ModelVersionState.RELEASED)
+        _require(
+            fixed == (self.canon_rev is not None and self.truth_rev is not None),
+            "a version fixes its revision counters exactly when it is CONSISTENT or RELEASED",
+        )
+
+    @property
+    def label(self) -> str:
+        if self.canon_rev is None or self.truth_rev is None:
+            return f"open-{self.number}"
+        return f"canon@r{self.canon_rev}/truth@r{self.truth_rev}"
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -1231,6 +1272,7 @@ RECORD_TYPES: tuple[type[Any], ...] = (
     Trace,
     GateRecord,
     AuditRecord,
+    ModelVersion,
     ExtractionRecord,
     ValidationReport,
 )

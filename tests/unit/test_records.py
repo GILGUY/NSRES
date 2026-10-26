@@ -39,6 +39,7 @@ from nsres.domain.vocab import (
     InteractionKind,
     MechanicAxis,
     MechanicClass,
+    ModelVersionState,
     ParticipantRole,
     Plane,
     PovMode,
@@ -480,6 +481,14 @@ def samples() -> list[Any]:
             visibility=Visibility.REVEALABLE,
             render_status=RenderStatus.RENDERED,
         ),
+        r.ModelVersion(
+            uuid=uid(),
+            number=3,
+            state=ModelVersionState.CONSISTENT,
+            opened_tx=40,
+            canon_rev=12,
+            truth_rev=47,
+        ),
     ]
 
 
@@ -530,7 +539,7 @@ def test_only_objects_embed_mechanics() -> None:
 
 
 def test_mechanics_effects_decode_by_op() -> None:
-    working = SAMPLES[-1]
+    working = next(s for s in SAMPLES if isinstance(s, r.Event) and s.type == "WORKING")
     assert isinstance(working, r.Event)
     decoded = r.from_json(r.Event, r.to_json(working))
     assert [type(effect).__name__ for effect in decoded.effects] == [
@@ -541,6 +550,18 @@ def test_mechanics_effects_decode_by_op() -> None:
         "LearnEffect",
         "ReleaseEffect",
     ]
+
+
+def test_model_version_label_is_fixed_only_once_consistent() -> None:
+    version = SAMPLES[-1]
+    assert isinstance(version, r.ModelVersion)
+    assert version.label == "canon@r12/truth@r47"
+    opened = replace(version, state=ModelVersionState.OPEN, canon_rev=None, truth_rev=None)
+    assert opened.label == "open-3"
+    with pytest.raises(r.RecordError, match="exactly when"):
+        replace(version, state=ModelVersionState.OPEN)
+    with pytest.raises(r.RecordError, match="exactly when"):
+        replace(version, canon_rev=None)
 
 
 def test_finding_has_no_record_status() -> None:

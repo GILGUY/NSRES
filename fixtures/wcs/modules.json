@@ -1,0 +1,1331 @@
+{
+  "version": "1.0-runtime",
+  "modules": [
+    {
+      "name": "story-bottle-setup",
+      "title": "Story Bottle Setup",
+      "phase": "I",
+      "primary_job": "Initialize or reorganize the capture and source-of-truth container.",
+      "primary_artifact": "bottle_map",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "RAW",
+        "INTAKE",
+        "ACCEPTED"
+      ],
+      "accepted_input_types": [
+        "UNCLASSIFIED",
+        "EDITORIAL_NOTE"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "capture_lanes",
+        "movement_rules",
+        "canon_gate_rules",
+        "slush_rules"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "story-spark-capture",
+        "production-bible-builder"
+      ],
+      "validator_rules": {
+        "must_preserve_raw": true,
+        "initializes_system_files": true
+      }
+    },
+    {
+      "name": "story-spark-capture",
+      "title": "Story Spark Capture",
+      "phase": "I",
+      "primary_job": "Extract and protect the charged point of fascination.",
+      "primary_artifact": "spark_card",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "UNCLASSIFIED",
+        "PROSE_FRAGMENT"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "raw_spark",
+        "spark_type",
+        "gravitational_pull",
+        "protected_mystery",
+        "first_riff_target"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "resolve the core open question",
+        "assign genre",
+        "assign market category",
+        "explain why the story matters",
+        "force a plot"
+      ],
+      "next_modules": [
+        "creative-riff-capture",
+        "character-autopsy",
+        "living-world-loop"
+      ],
+      "validator_rules": {
+        "open_questions_must_remain_open": true
+      }
+    },
+    {
+      "name": "creative-riff-capture",
+      "title": "Creative Riff Capture",
+      "phase": "I",
+      "primary_job": "Generate or organize raw exploratory creative material.",
+      "primary_artifact": "riff_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "RAW",
+        "INTAKE",
+        "ACCEPTED"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "RIFF",
+        "PROSE_FRAGMENT",
+        "UNCLASSIFIED"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "riff_lane",
+        "raw_riff",
+        "discoveries",
+        "next_riff_targets"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "polish the riff into final prose",
+        "resolve continuity while riffing",
+        "answer protected open questions"
+      ],
+      "next_modules": [
+        "character-autopsy",
+        "living-world-loop",
+        "production-bible-builder"
+      ],
+      "validator_rules": {
+        "open_questions_must_remain_open": true,
+        "raw_generation": true
+      }
+    },
+    {
+      "name": "character-autopsy",
+      "title": "Character Autopsy",
+      "phase": "II",
+      "primary_job": "Build a pressure-history dossier and relationship/world implications.",
+      "primary_artifact": "character_dossier",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "CHARACTER_SEED",
+        "SPARK",
+        "RIFF"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "core_contradiction",
+        "pressure_history",
+        "institutional_version",
+        "relational_version",
+        "relationship_web",
+        "world_implications",
+        "plot_engine"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "living-world-loop",
+        "production-bible-builder",
+        "story-conspiracy-board"
+      ],
+      "validator_rules": {
+        "requires_two_versions": true,
+        "canon_candidates_are_proposals": true
+      }
+    },
+    {
+      "name": "living-world-loop",
+      "title": "Living World Loop",
+      "phase": "II",
+      "primary_job": "Develop world facts through causal ripples and generated people.",
+      "primary_artifact": "world_ripple_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "WORLD_SEED",
+        "CHARACTER_SEED",
+        "SPARK",
+        "RIFF"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "seed",
+        "ripple_map",
+        "generated_people",
+        "world_agency",
+        "bible_candidates"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "production-bible-builder",
+        "story-conspiracy-board"
+      ],
+      "validator_rules": {
+        "canon_candidates_are_proposals": true
+      }
+    },
+    {
+      "name": "production-bible-builder",
+      "title": "Production Bible Builder",
+      "phase": "II",
+      "primary_job": "Classify and assemble load-bearing project truth.",
+      "primary_artifact": "production_bible_proposal",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "CHARACTER_SEED",
+        "WORLD_SEED",
+        "STORY_STRUCTURAL",
+        "EDITORIAL_NOTE",
+        "UNCLASSIFIED"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "source_harvest",
+        "classified_entries",
+        "contradiction_log",
+        "bible_sections",
+        "canon_candidates"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "write canon without a separate canon gate per candidate"
+      ],
+      "next_modules": [
+        "story-conspiracy-board",
+        "story-spine-lock"
+      ],
+      "validator_rules": {
+        "each_canon_candidate_requires_gate": true
+      }
+    },
+    {
+      "name": "sandbox-slush-pile",
+      "title": "Sandbox Slush Pile",
+      "phase": "III",
+      "primary_job": "Test a new idea against project DNA and preserve its disposition.",
+      "primary_artifact": "fit_verdict",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "RIFF",
+        "CHARACTER_SEED",
+        "WORLD_SEED",
+        "STORY_STRUCTURAL"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "idea_card",
+        "fit_matrix",
+        "verdict",
+        "preservation_plan"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "move or reject the evaluated idea without a human decision"
+      ],
+      "next_modules": [
+        "story-conspiracy-board",
+        "production-bible-builder"
+      ],
+      "validator_rules": {
+        "verdict_required": true,
+        "human_confirmation_for_slush": true
+      }
+    },
+    {
+      "name": "story-conspiracy-board",
+      "title": "Story Conspiracy Board",
+      "phase": "III",
+      "primary_job": "Map consequence chains and discover the strongest emerging story.",
+      "primary_artifact": "connection_map",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL",
+        "CHARACTER_SEED",
+        "WORLD_SEED",
+        "SPARK",
+        "RIFF"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "node_map",
+        "consequence_chains",
+        "restructure_options",
+        "story_legs_test",
+        "emerging_story"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "story-spine-lock"
+      ],
+      "validator_rules": {
+        "must_include_story_legs_test": true
+      }
+    },
+    {
+      "name": "story-spine-lock",
+      "title": "Story Spine Lock",
+      "phase": "III",
+      "primary_job": "Propose the directional skeleton and final state.",
+      "primary_artifact": "story_spine",
+      "default_gate": "STRUCTURE_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL",
+        "CHARACTER_SEED",
+        "WORLD_SEED"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "momentum_map",
+        "ending_candidates",
+        "spine_sentence",
+        "spine_paragraph",
+        "beat_chain",
+        "foreclosed_options"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "treat the spine as locked before typed human confirmation"
+      ],
+      "next_modules": [
+        "story-blueprint-builder"
+      ],
+      "validator_rules": {
+        "typed_confirmation": true,
+        "creates_structure_lock": true
+      }
+    },
+    {
+      "name": "story-blueprint-builder",
+      "title": "Story Blueprint Builder",
+      "phase": "III",
+      "primary_job": "Turn an approved spine into draftable architecture.",
+      "primary_artifact": "story_blueprint",
+      "default_gate": "STRUCTURE_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "act_tour",
+        "character_engine_map",
+        "restructure_log",
+        "chapter_beats",
+        "readiness_verdict"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_canon_type",
+          "artifact_type": "story_spine"
+        }
+      ],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "run without an approved spine lock"
+      ],
+      "next_modules": [
+        "first-draft-forward",
+        "pov-shot-selection"
+      ],
+      "validator_rules": {
+        "typed_confirmation": true,
+        "requires_locked_spine": true
+      }
+    },
+    {
+      "name": "first-draft-forward",
+      "title": "First Draft Forward",
+      "phase": "IV",
+      "primary_job": "Draft raw footage forward from an approved blueprint.",
+      "primary_artifact": "draft_forward_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL",
+        "PROSE_FRAGMENT"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "beat_anchor",
+        "raw_draft",
+        "bracket_log",
+        "forward_verdict"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_canon_type",
+          "artifact_type": "story_blueprint"
+        }
+      ],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "rewrite prior raw footage in place",
+        "stop for local polish"
+      ],
+      "next_modules": [
+        "pov-shot-selection",
+        "scene-performance-director"
+      ],
+      "validator_rules": {
+        "raw_footage_copy": true
+      }
+    },
+    {
+      "name": "pov-shot-selection",
+      "title": "POV Shot Selection",
+      "phase": "IV",
+      "primary_job": "Choose and enforce the scene's foundational narrative camera.",
+      "primary_artifact": "pov_decision_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT",
+        "STORY_STRUCTURAL"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "scene_need",
+        "camera_choice",
+        "information_boundary",
+        "leak_audit"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "first-draft-forward",
+        "scene-performance-director",
+        "advanced-camera-pov"
+      ],
+      "validator_rules": {
+        "camera_boundary_required": true
+      }
+    },
+    {
+      "name": "scene-performance-director",
+      "title": "Scene Performance Director",
+      "phase": "IV",
+      "primary_job": "Translate labels and summaries into performed action.",
+      "primary_artifact": "performance_edit_packet",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "label_map",
+        "channel_plan",
+        "before_after_edits",
+        "pressure_check"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "tone-surf-editor",
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": true,
+        "before_after_required": true
+      }
+    },
+    {
+      "name": "telling-architecture-recut",
+      "title": "Telling Architecture Recut",
+      "phase": "V",
+      "primary_job": "Redesign presentation order after the story is known.",
+      "primary_artifact": "recut_proposal",
+      "default_gate": "STRUCTURE_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL",
+        "PROSE_FRAGMENT"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "chronology",
+        "experience_goal",
+        "presentation_order",
+        "gap_log",
+        "recut_verdict"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_any_type",
+          "artifact_types": [
+            "story_blueprint",
+            "draft_forward_packet"
+          ]
+        }
+      ],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "advanced-camera-pov",
+        "diegetic-document-weaver"
+      ],
+      "validator_rules": {
+        "typed_confirmation": true
+      }
+    },
+    {
+      "name": "advanced-camera-pov",
+      "title": "Advanced Camera POV",
+      "phase": "V",
+      "primary_job": "Design deliberate POV and tense movement.",
+      "primary_artifact": "advanced_camera_plan",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "baseline_camera",
+        "movement_need",
+        "cut_plan",
+        "drift_audit"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_any_type",
+          "artifact_types": [
+            "pov_decision_packet"
+          ]
+        }
+      ],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "tone-surf-editor",
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": true
+      }
+    },
+    {
+      "name": "diegetic-document-weaver",
+      "title": "Diegetic Document Weaver",
+      "phase": "V",
+      "primary_job": "Create or integrate an in-world document with bias and consequence.",
+      "primary_artifact": "diegetic_document_packet",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT",
+        "WORLD_SEED",
+        "EDITORIAL_NOTE"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "document_function",
+        "authorship_bias",
+        "form_plan",
+        "document_text",
+        "integration_plan"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "tone-surf-editor",
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "document_bias_required": true,
+        "before_after_knowledge_required": true
+      }
+    },
+    {
+      "name": "prose-voice-strategy",
+      "title": "Prose Voice Strategy",
+      "phase": "V",
+      "primary_job": "Define the prose's operating voice and drift rules.",
+      "primary_artifact": "voice_strategy",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT",
+        "EDITORIAL_NOTE"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "voice_diagnosis",
+        "strategy_choice",
+        "diction_map",
+        "sample_revision",
+        "drift_log"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "scene-performance-director",
+        "tone-surf-editor",
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": false,
+        "canon_candidate": true
+      }
+    },
+    {
+      "name": "tone-surf-editor",
+      "title": "Tone Surf Editor",
+      "phase": "V",
+      "primary_job": "Calibrate committed tonal shifts without flattening them.",
+      "primary_artifact": "tone_surf_edit",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "tone_map",
+        "pressure_test",
+        "commitment_edits",
+        "mud_audit",
+        "tone_verdict"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": true,
+        "before_after_required": true
+      }
+    },
+    {
+      "name": "rhythm-edit",
+      "title": "Rhythm Edit",
+      "phase": "V",
+      "primary_job": "Perform the final cadence, sound, speech, and fracture-preservation pass.",
+      "primary_artifact": "rhythm_edit_packet",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "truth_flags",
+        "cadence_plan",
+        "sound_audit",
+        "speech_audit",
+        "before_after_edits",
+        "ship_verdict"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope"
+      ],
+      "next_modules": [
+        "showrunner-final-cut"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": true,
+        "before_after_required": true
+      }
+    },
+    {
+      "name": "showrunner-final-cut",
+      "title": "Showrunner Final Cut",
+      "phase": "V",
+      "primary_job": "Prepare a final human decision about shipping or targeted return.",
+      "primary_artifact": "final_cut_decision",
+      "default_gate": "SHIP_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT",
+        "EDITORIAL_NOTE",
+        "STORY_STRUCTURAL"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "anxiety_map",
+        "evidence_check",
+        "recommended_decision",
+        "next_action",
+        "snapshot_required"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_any_type",
+          "artifact_types": [
+            "rhythm_edit_packet",
+            "draft_forward_packet"
+          ]
+        }
+      ],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "decide to ship without a human ship gate"
+      ],
+      "next_modules": [],
+      "validator_rules": {
+        "typed_confirmation": true,
+        "snapshot_on_ship": true
+      }
+    },
+    {
+      "name": "spark-rewrite-triage",
+      "title": "Spark Rewrite Triage",
+      "phase": "III",
+      "primary_job": "Distinguish discovery-driven rewriting from fear-driven demolition.",
+      "primary_artifact": "rewrite_triage_verdict",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "STORY_STRUCTURAL",
+        "EDITORIAL_NOTE",
+        "PROSE_FRAGMENT"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "rewrite_claim",
+        "evidence_log",
+        "classification",
+        "action_plan",
+        "salvage_plan"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "discard or slush material based on the verdict alone"
+      ],
+      "next_modules": [
+        "story-conspiracy-board",
+        "story-spine-lock",
+        "first-draft-forward"
+      ],
+      "validator_rules": {
+        "destructive_recommendations_require_gate": true
+      }
+    },
+    {
+      "name": "story-why-trap",
+      "title": "Story Why Trap",
+      "phase": "I",
+      "primary_job": "Separate desire, meaning, stakes, legitimacy, and insecurity.",
+      "primary_artifact": "why_trap_release_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "EDITORIAL_NOTE",
+        "UNCLASSIFIED"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "why_map",
+        "desire_recovery",
+        "stakes_translation",
+        "meaning_hypotheses",
+        "next_action"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "lock theme as doctrine",
+        "require market justification"
+      ],
+      "next_modules": [
+        "story-spark-capture",
+        "creative-riff-capture"
+      ],
+      "validator_rules": {
+        "meaning_remains_hypothesis": true
+      }
+    },
+    {
+      "name": "showrunner-production-handler",
+      "title": "Showrunner Production Handler",
+      "phase": "HANDLER",
+      "primary_job": "Classify project state, route one worker, and enforce gates.",
+      "primary_artifact": "routing_packet",
+      "default_gate": "INTAKE_GATE",
+      "accepted_input_states": [
+        "RAW",
+        "INTAKE",
+        "ACCEPTED",
+        "CANON",
+        "PROPOSAL"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "RIFF",
+        "CHARACTER_SEED",
+        "WORLD_SEED",
+        "STORY_STRUCTURAL",
+        "PROSE_FRAGMENT",
+        "EDITORIAL_NOTE",
+        "UNCLASSIFIED"
+      ],
+      "required_output_fields": [
+        "run_id",
+        "module",
+        "input_artifacts",
+        "artifact_state",
+        "artifact_title",
+        "artifact_type",
+        "content",
+        "assumptions",
+        "open_questions",
+        "canon_impact",
+        "reversibility",
+        "gate_required",
+        "gate_type",
+        "artifact_classification",
+        "phase_diagnosis",
+        "selected_module",
+        "rejected_modules",
+        "gate_plan",
+        "handoff_packet"
+      ],
+      "preconditions": [],
+      "forbidden_moves": [
+        "modify canon directly",
+        "promote its own output to accepted",
+        "delete or overwrite raw material",
+        "call another worker module directly",
+        "assume context absent from the handoff",
+        "hide assumptions",
+        "write outside its declared scope",
+        "perform creative worker output"
+      ],
+      "next_modules": [],
+      "validator_rules": {
+        "reads_coverage_map": true,
+        "updates_manifest": true,
+        "single_primary_module": true
+      }
+    }
+  ]
+}

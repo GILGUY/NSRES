@@ -1,0 +1,778 @@
+{
+  "source": "WCS editable/module_contracts/modules.json, version 1.0-runtime (Drive id 1eUOQBcfXhM_isxDnG1LdwOoMupa3XNV2, 37,499 bytes)",
+  "sha256": "f5516638d7a4932e782c9b7f7edccdd7d01f3f9f7c43d7b624c9d0e16ada854c",
+  "evidence": "CONTENT_READ 2026-10-25; differs from the 37,480-byte copies only by 'assign genre' in story-spark-capture forbidden_moves",
+  "count": 23,
+  "modules": [
+    {
+      "name": "story-bottle-setup",
+      "phase": "I",
+      "primary_artifact": "bottle_map",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "RAW",
+        "INTAKE",
+        "ACCEPTED"
+      ],
+      "accepted_input_types": [
+        "UNCLASSIFIED",
+        "EDITORIAL_NOTE"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "story-spark-capture",
+        "production-bible-builder"
+      ],
+      "validator_rules": {
+        "must_preserve_raw": true,
+        "initializes_system_files": true
+      },
+      "module_specific_output_fields": [
+        "capture_lanes",
+        "movement_rules",
+        "canon_gate_rules",
+        "slush_rules"
+      ]
+    },
+    {
+      "name": "story-spark-capture",
+      "phase": "I",
+      "primary_artifact": "spark_card",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "UNCLASSIFIED",
+        "PROSE_FRAGMENT"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "creative-riff-capture",
+        "character-autopsy",
+        "living-world-loop"
+      ],
+      "validator_rules": {
+        "open_questions_must_remain_open": true
+      },
+      "module_specific_output_fields": [
+        "raw_spark",
+        "spark_type",
+        "gravitational_pull",
+        "protected_mystery",
+        "first_riff_target"
+      ]
+    },
+    {
+      "name": "creative-riff-capture",
+      "phase": "I",
+      "primary_artifact": "riff_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "RAW",
+        "INTAKE",
+        "ACCEPTED"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "RIFF",
+        "PROSE_FRAGMENT",
+        "UNCLASSIFIED"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "character-autopsy",
+        "living-world-loop",
+        "production-bible-builder"
+      ],
+      "validator_rules": {
+        "open_questions_must_remain_open": true,
+        "raw_generation": true
+      },
+      "module_specific_output_fields": [
+        "riff_lane",
+        "raw_riff",
+        "discoveries",
+        "next_riff_targets"
+      ]
+    },
+    {
+      "name": "character-autopsy",
+      "phase": "II",
+      "primary_artifact": "character_dossier",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "CHARACTER_SEED",
+        "SPARK",
+        "RIFF"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "living-world-loop",
+        "production-bible-builder",
+        "story-conspiracy-board"
+      ],
+      "validator_rules": {
+        "requires_two_versions": true,
+        "canon_candidates_are_proposals": true
+      },
+      "module_specific_output_fields": [
+        "core_contradiction",
+        "pressure_history",
+        "institutional_version",
+        "relational_version",
+        "relationship_web",
+        "world_implications",
+        "plot_engine"
+      ]
+    },
+    {
+      "name": "living-world-loop",
+      "phase": "II",
+      "primary_artifact": "world_ripple_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "WORLD_SEED",
+        "CHARACTER_SEED",
+        "SPARK",
+        "RIFF"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "production-bible-builder",
+        "story-conspiracy-board"
+      ],
+      "validator_rules": {
+        "canon_candidates_are_proposals": true
+      },
+      "module_specific_output_fields": [
+        "seed",
+        "ripple_map",
+        "generated_people",
+        "world_agency",
+        "bible_candidates"
+      ]
+    },
+    {
+      "name": "production-bible-builder",
+      "phase": "II",
+      "primary_artifact": "production_bible_proposal",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "CHARACTER_SEED",
+        "WORLD_SEED",
+        "STORY_STRUCTURAL",
+        "EDITORIAL_NOTE",
+        "UNCLASSIFIED"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "story-conspiracy-board",
+        "story-spine-lock"
+      ],
+      "validator_rules": {
+        "each_canon_candidate_requires_gate": true
+      },
+      "module_specific_output_fields": [
+        "source_harvest",
+        "classified_entries",
+        "contradiction_log",
+        "bible_sections",
+        "canon_candidates"
+      ]
+    },
+    {
+      "name": "sandbox-slush-pile",
+      "phase": "III",
+      "primary_artifact": "fit_verdict",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "RIFF",
+        "CHARACTER_SEED",
+        "WORLD_SEED",
+        "STORY_STRUCTURAL"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "story-conspiracy-board",
+        "production-bible-builder"
+      ],
+      "validator_rules": {
+        "verdict_required": true,
+        "human_confirmation_for_slush": true
+      },
+      "module_specific_output_fields": [
+        "idea_card",
+        "fit_matrix",
+        "verdict",
+        "preservation_plan"
+      ]
+    },
+    {
+      "name": "story-conspiracy-board",
+      "phase": "III",
+      "primary_artifact": "connection_map",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL",
+        "CHARACTER_SEED",
+        "WORLD_SEED",
+        "SPARK",
+        "RIFF"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "story-spine-lock"
+      ],
+      "validator_rules": {
+        "must_include_story_legs_test": true
+      },
+      "module_specific_output_fields": [
+        "node_map",
+        "consequence_chains",
+        "restructure_options",
+        "story_legs_test",
+        "emerging_story"
+      ]
+    },
+    {
+      "name": "story-spine-lock",
+      "phase": "III",
+      "primary_artifact": "story_spine",
+      "default_gate": "STRUCTURE_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL",
+        "CHARACTER_SEED",
+        "WORLD_SEED"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "story-blueprint-builder"
+      ],
+      "validator_rules": {
+        "typed_confirmation": true,
+        "creates_structure_lock": true
+      },
+      "module_specific_output_fields": [
+        "momentum_map",
+        "ending_candidates",
+        "spine_sentence",
+        "spine_paragraph",
+        "beat_chain",
+        "foreclosed_options"
+      ]
+    },
+    {
+      "name": "story-blueprint-builder",
+      "phase": "III",
+      "primary_artifact": "story_blueprint",
+      "default_gate": "STRUCTURE_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_canon_type",
+          "artifact_type": "story_spine"
+        }
+      ],
+      "next_modules": [
+        "first-draft-forward",
+        "pov-shot-selection"
+      ],
+      "validator_rules": {
+        "typed_confirmation": true,
+        "requires_locked_spine": true
+      },
+      "module_specific_output_fields": [
+        "act_tour",
+        "character_engine_map",
+        "restructure_log",
+        "chapter_beats",
+        "readiness_verdict"
+      ]
+    },
+    {
+      "name": "first-draft-forward",
+      "phase": "IV",
+      "primary_artifact": "draft_forward_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL",
+        "PROSE_FRAGMENT"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_canon_type",
+          "artifact_type": "story_blueprint"
+        }
+      ],
+      "next_modules": [
+        "pov-shot-selection",
+        "scene-performance-director"
+      ],
+      "validator_rules": {
+        "raw_footage_copy": true
+      },
+      "module_specific_output_fields": [
+        "beat_anchor",
+        "raw_draft",
+        "bracket_log",
+        "forward_verdict"
+      ]
+    },
+    {
+      "name": "pov-shot-selection",
+      "phase": "IV",
+      "primary_artifact": "pov_decision_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT",
+        "STORY_STRUCTURAL"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "first-draft-forward",
+        "scene-performance-director",
+        "advanced-camera-pov"
+      ],
+      "validator_rules": {
+        "camera_boundary_required": true
+      },
+      "module_specific_output_fields": [
+        "scene_need",
+        "camera_choice",
+        "information_boundary",
+        "leak_audit"
+      ]
+    },
+    {
+      "name": "scene-performance-director",
+      "phase": "IV",
+      "primary_artifact": "performance_edit_packet",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "tone-surf-editor",
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": true,
+        "before_after_required": true
+      },
+      "module_specific_output_fields": [
+        "label_map",
+        "channel_plan",
+        "before_after_edits",
+        "pressure_check"
+      ]
+    },
+    {
+      "name": "telling-architecture-recut",
+      "phase": "V",
+      "primary_artifact": "recut_proposal",
+      "default_gate": "STRUCTURE_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "STORY_STRUCTURAL",
+        "PROSE_FRAGMENT"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_any_type",
+          "artifact_types": [
+            "story_blueprint",
+            "draft_forward_packet"
+          ]
+        }
+      ],
+      "next_modules": [
+        "advanced-camera-pov",
+        "diegetic-document-weaver"
+      ],
+      "validator_rules": {
+        "typed_confirmation": true
+      },
+      "module_specific_output_fields": [
+        "chronology",
+        "experience_goal",
+        "presentation_order",
+        "gap_log",
+        "recut_verdict"
+      ]
+    },
+    {
+      "name": "advanced-camera-pov",
+      "phase": "V",
+      "primary_artifact": "advanced_camera_plan",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_any_type",
+          "artifact_types": [
+            "pov_decision_packet"
+          ]
+        }
+      ],
+      "next_modules": [
+        "tone-surf-editor",
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": true
+      },
+      "module_specific_output_fields": [
+        "baseline_camera",
+        "movement_need",
+        "cut_plan",
+        "drift_audit"
+      ]
+    },
+    {
+      "name": "diegetic-document-weaver",
+      "phase": "V",
+      "primary_artifact": "diegetic_document_packet",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT",
+        "WORLD_SEED",
+        "EDITORIAL_NOTE"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "tone-surf-editor",
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "document_bias_required": true,
+        "before_after_knowledge_required": true
+      },
+      "module_specific_output_fields": [
+        "document_function",
+        "authorship_bias",
+        "form_plan",
+        "document_text",
+        "integration_plan"
+      ]
+    },
+    {
+      "name": "prose-voice-strategy",
+      "phase": "V",
+      "primary_artifact": "voice_strategy",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT",
+        "EDITORIAL_NOTE"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "scene-performance-director",
+        "tone-surf-editor",
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": false,
+        "canon_candidate": true
+      },
+      "module_specific_output_fields": [
+        "voice_diagnosis",
+        "strategy_choice",
+        "diction_map",
+        "sample_revision",
+        "drift_log"
+      ]
+    },
+    {
+      "name": "tone-surf-editor",
+      "phase": "V",
+      "primary_artifact": "tone_surf_edit",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "rhythm-edit"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": true,
+        "before_after_required": true
+      },
+      "module_specific_output_fields": [
+        "tone_map",
+        "pressure_test",
+        "commitment_edits",
+        "mud_audit",
+        "tone_verdict"
+      ]
+    },
+    {
+      "name": "rhythm-edit",
+      "phase": "V",
+      "primary_artifact": "rhythm_edit_packet",
+      "default_gate": "INTEGRATION_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "showrunner-final-cut"
+      ],
+      "validator_rules": {
+        "voice_strategy_check": true,
+        "before_after_required": true
+      },
+      "module_specific_output_fields": [
+        "truth_flags",
+        "cadence_plan",
+        "sound_audit",
+        "speech_audit",
+        "before_after_edits",
+        "ship_verdict"
+      ]
+    },
+    {
+      "name": "showrunner-final-cut",
+      "phase": "V",
+      "primary_artifact": "final_cut_decision",
+      "default_gate": "SHIP_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "PROSE_FRAGMENT",
+        "EDITORIAL_NOTE",
+        "STORY_STRUCTURAL"
+      ],
+      "preconditions": [
+        {
+          "kind": "requires_any_type",
+          "artifact_types": [
+            "rhythm_edit_packet",
+            "draft_forward_packet"
+          ]
+        }
+      ],
+      "next_modules": [],
+      "validator_rules": {
+        "typed_confirmation": true,
+        "snapshot_on_ship": true
+      },
+      "module_specific_output_fields": [
+        "anxiety_map",
+        "evidence_check",
+        "recommended_decision",
+        "next_action",
+        "snapshot_required"
+      ]
+    },
+    {
+      "name": "spark-rewrite-triage",
+      "phase": "III",
+      "primary_artifact": "rewrite_triage_verdict",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "STORY_STRUCTURAL",
+        "EDITORIAL_NOTE",
+        "PROSE_FRAGMENT"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "story-conspiracy-board",
+        "story-spine-lock",
+        "first-draft-forward"
+      ],
+      "validator_rules": {
+        "destructive_recommendations_require_gate": true
+      },
+      "module_specific_output_fields": [
+        "rewrite_claim",
+        "evidence_log",
+        "classification",
+        "action_plan",
+        "salvage_plan"
+      ]
+    },
+    {
+      "name": "story-why-trap",
+      "phase": "I",
+      "primary_artifact": "why_trap_release_packet",
+      "default_gate": "PROPOSAL_GATE",
+      "accepted_input_states": [
+        "INTAKE",
+        "ACCEPTED",
+        "CANON"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "EDITORIAL_NOTE",
+        "UNCLASSIFIED"
+      ],
+      "preconditions": [],
+      "next_modules": [
+        "story-spark-capture",
+        "creative-riff-capture"
+      ],
+      "validator_rules": {
+        "meaning_remains_hypothesis": true
+      },
+      "module_specific_output_fields": [
+        "why_map",
+        "desire_recovery",
+        "stakes_translation",
+        "meaning_hypotheses",
+        "next_action"
+      ]
+    },
+    {
+      "name": "showrunner-production-handler",
+      "phase": "HANDLER",
+      "primary_artifact": "routing_packet",
+      "default_gate": "INTAKE_GATE",
+      "accepted_input_states": [
+        "RAW",
+        "INTAKE",
+        "ACCEPTED",
+        "CANON",
+        "PROPOSAL"
+      ],
+      "accepted_input_types": [
+        "SPARK",
+        "RIFF",
+        "CHARACTER_SEED",
+        "WORLD_SEED",
+        "STORY_STRUCTURAL",
+        "PROSE_FRAGMENT",
+        "EDITORIAL_NOTE",
+        "UNCLASSIFIED"
+      ],
+      "preconditions": [],
+      "next_modules": [],
+      "validator_rules": {
+        "reads_coverage_map": true,
+        "updates_manifest": true,
+        "single_primary_module": true
+      },
+      "module_specific_output_fields": [
+        "artifact_classification",
+        "phase_diagnosis",
+        "selected_module",
+        "rejected_modules",
+        "gate_plan",
+        "handoff_packet"
+      ]
+    }
+  ],
+  "common_output_envelope": [
+    "run_id",
+    "module",
+    "input_artifacts",
+    "artifact_state",
+    "artifact_title",
+    "artifact_type",
+    "content",
+    "assumptions",
+    "open_questions",
+    "canon_impact",
+    "reversibility",
+    "gate_required",
+    "gate_type"
+  ]
+}

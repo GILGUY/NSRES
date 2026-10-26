@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling==1.32.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nsres"
+version = "0.1.0.dev0"
+description = "Narrative State Reconciliation Engine: reference implementation of NSRES-SPEC v0.1.1"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "Patrick Gil" }]
+dependencies = ["jsonschema>=4.26,<5"]
+
+[project.scripts]
+nsres = "nsres.cli.main:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4,<3",
+    "pytest>=9.1,<10",
+    "ruff>=0.17,<0.18",
+    "types-jsonschema>=4.26",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.hatch.build]
+reproducible = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nsres"]
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src/nsres", "README.md", "pyproject.toml"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests", "scripts"]
+extend-exclude = ["docs", "fixtures"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "RUF", "N", "C4", "PIE", "PT", "RET"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+mypy_path = "src"
+warn_unreachable = true
+exclude = ["^docs/", "^fixtures/", "^build/", "^dist/"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --strict-config"
+xfail_strict = true

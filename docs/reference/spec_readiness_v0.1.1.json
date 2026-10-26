@@ -1,0 +1,28 @@
+{
+  "score_name": "pilot_readiness NSRES-SPEC v0.1.1 (ACCEPT as the working spec for the section-14 pilot)",
+  "factors": [
+    {"name": "internal_consistency", "weight": 0.25, "raw": 0.85,
+     "evidence": ["CONTENT_READ: rev 110 blocks for 0.7, 6.8, 10.2, 12.2, 15.3, B.3, B.4, L9 channel table, 0.3 prefixes",
+                  "CONTENT_READ: three more drift defects of one class found (SUSTAIN and DETECTED missing from 10.2 unions; Finding.status missing from 10.2) plus the 6.8 heading merge; all fixed in v0.1.1"],
+     "reason": "the defects found were all prose-vs-code drift; no full mechanical cross-check of every enum yet and no independent reviewer, so the raw score does not rise"},
+    {"name": "definitional_completeness", "weight": 0.20, "raw": 0.95,
+     "evidence": ["CONTENT_READ: section 2 term tables unchanged since v0.1 scoring"],
+     "reason": "unchanged"},
+    {"name": "buildability", "weight": 0.20, "raw": 0.85,
+     "evidence": ["CONTENT_READ: B.3 $defs still stub position, setting, pov, threads, character_state, information, constraints, outcomes, mechanics, gate_record",
+                  "GAP_IDENTIFIED: the handoff's Patch 4 (full $defs) was not delivered"],
+     "reason": "unchanged; the stubs become WP-010 work"},
+    {"name": "integration_grounding", "weight": 0.15, "raw": 0.74,
+     "evidence": ["CONTENT_READ: modules.json 1.0-runtime both versions (diff: one forbidden move), PROJECT_FULL_EXPLICATION, SKILL_MODULES_AND_GOAL_EXPLAINED, showrunner_production_handler.py, all 23 module source documents",
+                  "CONTENT_READ: Beat Engine intake v0.1 and SLB lock (pasted this session)",
+                  "GAP_IDENTIFIED: Seam Protocol, MAPS, ARTEMIS/GVE, UTED-EC v3.1, QMCP canon still read only as summaries or snippets"],
+     "reason": "WCS weight 0.35 at 0.95; Seam 0.15 at 0.60; Beat Engine 0.15 at 0.80; MAPS 0.10 at 0.55; ARTEMIS 0.10 at 0.55; mechanics kit 0.15 at 0.60; weighted 0.7425"},
+    {"name": "critic", "weight": 0.20, "raw": 0.60,
+     "evidence": ["CONTENT_READ: exposure ledger 15.1; C1, C4, C6, C10 still HIGH and untested",
+                  "TESTIMONY_ONLY: peer handoff review found two of the drift defects; it did not attack any HIGH item"],
+     "reason": "no new evidence on the items the pilot exists to test"}
+  ],
+  "caps": [
+    {"name": "source_grounding", "value": 0.80, "reason": "integration grounding below 0.85 caps promotion readiness at 0.80 (corpus rule)"}
+  ]
+}
